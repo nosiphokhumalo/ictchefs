@@ -1,0 +1,79 @@
+html{
+    min-width:100%;
+    min-height: 100%;
+    background-color:#D4E6F1;
+}
+
+#addStudent{
+    background-color: #FFFFFF;
+}
+
+.studentInfo{
+    background-color: #FFFFFF;
+    display:inline-block;
+    min-width:40%;
+}
+
+.studentInfo input{
+    width:95%;
+    margin-left:5px;
+    margin-bottom:5px;
+}
+.studentInfo h4{
+    margin-left:5px;
+}
+
+.uploadImage{
+    display:inline-block;
+    background-color: #FFFFFF;
+    min-width:50%;
+    max-width: 50%;
+}
+
+.fileupload{
+    margin-left:5px;
+}
+
+#userImage{
+    max-width: 60%;
+    max-height: 60%;
+    margin-left:20px;
+}
+
+.adds{
+    background-color:#D4E6F1;
+
+    border-radius:2px;
+    width:100%;
+    position:relative;
+    margin-top: -25px;
+    text-align: center;
+
+}
+
+.adds h4{
+    color:#283747;
+    display:inline-block;
+    position: relative;
+    top: 10px;
+}
+
+.adds a{
+    background:#566573 center center no-repeat;
+    position: absolute;
+    top:20px;
+    left: 5px;
+    width:35px;
+    height:35px;
+    display:inline-block;
+    text-decoration:none !important;
+    margin-right:5px;
+    border-radius:2px;
+    cursor:pointer;
+
+}
+
+.adds a.home-icon{
+    background-image:url("home.png");
+    background-size:40px 30px;
+}

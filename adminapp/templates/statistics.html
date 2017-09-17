@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>View Statistics</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/data.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  var myDate = new Date();
+var year = myDate.getFullYear();
+  $( function() {
+    $( "#year-range" ).slider({
+      range: true,
+      min: 2009,
+      max: parseInt(year),
+      values: [ 2009, parseInt(year) ],
+      slide: function( event, ui ) {
+        $( "#year_slider" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#year_slider" ).val( "" + $( "#year-range" ).slider( "values", 0 ) +
+      " - " + $( "#year-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+    <script>
+  var myDate = new Date();
+var year = myDate.getFullYear();
+  $( function() {
+    $( "#class-range" ).slider({
+      range: true,
+      min: 1,
+      max: {{ classes.class_no__max }},
+      values: [ 1, {{ classes.class_no__max }} ],
+      slide: function( event, ui ) {
+        $( "#class_slider" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#class_slider" ).val( "" + $( "#class-range" ).slider( "values", 0 ) +
+      " - " + $( "#class-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+        <script>
+        
+            Math.easeOutBounce = function (pos) {
+    		if ((pos) < (1 / 2.75)) {
+        		return (7.5625 * pos * pos);
+    		}
+    if (pos < (2 / 2.75)) {
+        return (7.5625 * (pos -= (1.5 / 2.75)) * pos + 0.75);
+    }
+    if (pos < (2.5 / 2.75)) {
+        return (7.5625 * (pos -= (2.25 / 2.75)) * pos + 0.9375);
+    }
+    return (7.5625 * (pos -= (2.625 / 2.75)) * pos + 0.984375);
+};
+               var createChart = function(){
+               		var data = {
+               	    data: {
+               		table: 'datatable'
+               	    },
+               	    chart: {
+               		type: 'column'
+               	    },
+               	    title: {
+               		text: 'Statistics'
+               	    },
+               	    yAxis: {
+               		allowDecimals: false,
+               		title: {
+               		    text: 'Number'
+               		}
+               	    },
+               	    plotOptions: {
+        		series: {
+            		animation: {
+                		duration: 2000,
+                		easing: 'easeOutBounce'
+            }
+        }
+    },
+               	    tooltip: {
+               		formatter: function () {
+               		    return '<b>' + this.series.name + '</b><br/>' +
+               			this.point.y + ' ' + this.point.name.toLowerCase();
+               		}
+               	    }
+               	}
+               			Highcharts.chart('chart_container', data);
+               		}
+            
+            
+            var populate = function(id, start, end) {
+                var select = document.getElementById(id);
+                for (var i = start; i < end + 1; i++) {
+                    var opt = i;
+                    var el = document.createElement("option");
+                    el.textContent = opt;
+                    el.value = opt;
+                    select.appendChild(el);
+                }
+            }
+            
+        </script>
+        {% csrf_token %}
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Home</a>
+                </div>
+                <ul class="nav navbar-nav">
+  		<li><a href="/add/">Add Student</a></li>
+  		<li><a href="#">View Students</a></li>
+  		<li><a href="#">View Graduates</a></li>
+  		<li  class="active"><a href="#">View Statistics</a></li>
+    </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <h1 align="center">Statistics</h1>
+            <div class="row" style="padding-left: 0.5cm;">
+    <div class="col-lg-2" id="left">
+    <h4>Filter:</h4>
+<select id='filter_select' title="Filter by..." class="selectpicker" data-width="auto">
+  			<option id="select_year" value="year">Year</option>
+  			<option id="select_class" value="class">Class</option>
+		    </select>
+		    <script>
+		    	$(function() {
+				$('#filter_select').on('change', function(){
+    					var selected = $(this).find("option:selected").val();
+    					if (selected == 'year'){
+    						document.getElementById("class_cont").style['display']='none'
+               	document.getElementById("year_cont").style['display']='inline'
+               					
+               					document.getElementById("button_container").style['display']='inline'
+    					}
+    					if (selected == 'class'){
+    						document.getElementById("year_cont").style['display']='none'
+               	document.getElementById("class_cont").style['display']='inline'
+               				
+               					document.getElementById("button_container").style['display']='inline'
+    					}
+  				});
+  
+			});
+		    </script>
+    </div>
+    <div class="col-lg-4" id="right">
+    <div class=row>
+    <div class=".col-md-2" style="padding-top: 0.5cm">
+
+                    <div id='year_cont' class="filters" style="display: none;">
+                    
+                
+		<div class="form-group">
+  			<label for="year_slider">Year range:</label>
+  			<input type="text" id="year_slider" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		    </div>
+ 		
+		    <div id="year-range" style="width:300px; "></div> </div>
+		    
+		    <div id='class_cont' class="filters" style="display: none; ">
+		    <div class="form-group">
+  			<label for="class_slider">Class range:</label>
+  			<input type="text" id="class_slider" readonly style="border:0; color:#f6931f; font-weight:bold;">
+		    </div>
+ 		
+		    <div id="class-range" style="width:300px;"></div> </div>
+		    
+    </div>
+  </div>
+  </div>
+  <div class=".col-md-2" style="padding-top: 1cm">
+           
+                
+                <div id='button_container' style="display: none">
+                    <button id='filter_button' type="submit" class="btn btn-primary">Filter</button>
+                    <input id='reset_button' class="btn btn-secondary" type="reset" value="Reset">
+                 </div>
+                
+                
+                
+                    {% csrf_token %}
+                    <script>
+                        var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+                        
+                        function csrfSafeMethod(method){
+                        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+                        }
+                        $.ajaxSetup({
+                            beforeSend: function(xhr, settings){
+                                if (!csrfSafeMethod(settings.type) && !this.crossDomain){
+                        	    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                }
+                            }
+                        });
+                        $('#filter_button').click(function(){
+				var filter_by = $('#filter_select').find("option:selected").val();
+                            var yearstart = $("#year_slider").val().slice(0, 4)
+                            var yearend = $("#year_slider").val().slice(7)
+                            var classstart = $("#class_slider").val().slice(0, 2).trim()
+                            var classend = $("#class_slider").val().slice(4)
+       			    var setHeadings = function(){
+       			    	if (filter_by === 'year'){
+       			    		document.getElementById("table_heading").innerHTML = "Showing statistics for: Year " + yearstart + " to " + yearend;
+       			    	} else if (filter_by ==='class'){
+       			    		document.getElementById("table_heading").innerHTML = "Showing statistics for: Class " + classstart + " to " + classend;
+       			    	}
+       			    }
+                             
+                                            
+                                            $.ajax({
+                                                url: '/filter/',
+                                                data: (filter_by === 'year' ? {'yearstart': yearstart, 'yearend': yearend, 'csrfmiddlewaretoken': csrftoken} : {'classstart': classstart, 'classend': classend, 'csrfmiddlewaretoken': csrftoken}),
+                                                type: 'POST',
+                                                success: function(data){
+                        	                    $('#table_container').html(data)
+                        	                    setHeadings()
+                        	                    createChart()
+                                                },
+                                            });
+                        
+                        
+                        });
+                    </script>
+                
+           
+            </div>
+            </div> <!-- close right row -->
+            <h3 id='table_heading' style="padding: 0.25cm 0cm 0cm 0.5cm"> Showing statistics for: All</h3>
+            <div id="body_container" style="overflow: hidden;">
+                <div id= "table_container" style=" float: left; padding: 0.75cm 1cm 1cm 0.5cm">
+                    {% include "table.html" %}
+                </div>
+                <!-- the graph container -->
+                <div id="chart_container" style="margin-left: 400px; padding: 0cm 1cm 0cm 0cm" ></div>
+                <script>
+                    createChart()
+                </script>
+            </div> <!-- close body_container -->
+        </div> <!-- close fluid_container -->
+    </body>
+</html>
