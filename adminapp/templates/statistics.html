@@ -101,16 +101,6 @@ var year = myDate.getFullYear();
                		}
             
             
-            var populate = function(id, start, end) {
-                var select = document.getElementById(id);
-                for (var i = start; i < end + 1; i++) {
-                    var opt = i;
-                    var el = document.createElement("option");
-                    el.textContent = opt;
-                    el.value = opt;
-                    select.appendChild(el);
-                }
-            }
             
         </script>
         {% csrf_token %}
