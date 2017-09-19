@@ -13,13 +13,13 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Bootstrap Date-Picker Plugin -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<script>
-function validateForm() {
-    if (document.forms["myForm"]["name"].value != "" && document.forms["myForm"]["id_no"].value != "" && document.forms["myForm"]["contact_details"].value != "" && document.forms["myForm"]["date"].value != "" && document.forms["myForm"]["class_no"].value != "") {
-        return true;
-    }
-}
-</script>
+    <script>
+        function validateForm() {
+            if (document.forms["myForm"]["name"].value != "" && document.forms["myForm"]["id_no"].value != "" && document.forms["myForm"]["contact_details"].value != "" && document.forms["myForm"]["date"].value != "" && document.forms["myForm"]["class_no"].value != "") {
+                return true;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -132,57 +132,58 @@ function validateForm() {
             }
         });
         $("#save_button").click(function(event) {
-        	if (!validateForm()){
-        		$("#danger-alert").show();
-        		setTimeout(function() {
-                        $("#danger-alert").hide();
-                    }, 2000);
-        	} else{
-            event.preventDefault();
-            var name = $('#name').val();
-            var id_no = $('#id_no').val();
-            var contact_details = $('#contact_details').val()
-            var class_no = $('#class_no').val();
-            var date = $('#date').val();
-            var image_path = $('#file').val();
-            var obj = {
-                "name": name,
-                "id_no": id_no,
-                "deceased": 0,
-                "image_path": image_path,
-                "contact_details": [{
-                    "contact": contact_details
-                }],
-                "student_info": [{
-                    "class_no": class_no,
-                    "grad_or_student": "student",
-                    "year": date,
-                    "dropout": 0
-                }]
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/students/",
-                csrfmiddlewaretoken: csrftoken,
-                data: JSON.stringify(obj),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                success: function() {
-                    document.getElementById("myForm").reset();
-                    document.getElementById("form1").reset();
-                    document.getElementById("imagePreview").src = "#";
-                    $("#success-alert").show();
-                    setTimeout(function() {
-                        $("#success-alert").hide();
-                    }, 5000);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+            if (!validateForm()) {
+                $("#danger-alert").show();
+                setTimeout(function() {
+                    $("#danger-alert").hide();
+                }, 2000);
+            } else {
+                event.preventDefault();
+                var name = $('#name').val();
+                var id_no = $('#id_no').val();
+                var contact_details = $('#contact_details').val()
+                var class_no = $('#class_no').val();
+                var date = $('#date').val();
+                var image_path = $('#file').val();
+                var obj = {
+                    "name": name,
+                    "id_no": id_no,
+                    "deceased": 0,
+                    "image_path": image_path,
+                    "contact_details": [{
+                        "contact": contact_details
+                    }],
+                    "student_info": [{
+                        "class_no": class_no,
+                        "grad_or_student": "student",
+                        "year": date,
+                        "dropout": 0
+                    }]
                 }
-            }); }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/students/",
+                    csrfmiddlewaretoken: csrftoken,
+                    data: JSON.stringify(obj),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function() {
+                        document.getElementById("myForm").reset();
+                        document.getElementById("form1").reset();
+                        document.getElementById("imagePreview").src = "#";
+                        $("#success-alert").show();
+                        setTimeout(function() {
+                            $("#success-alert").hide();
+                        }, 5000);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
+                    }
+                });
+            }
         });
     </script>
 </body>
