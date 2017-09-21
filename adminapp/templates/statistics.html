@@ -42,16 +42,8 @@
             $("#class-range").slider({
                 range: true,
                 min: 1,
-                max: {
-                    {
-                        classes.class_no__max
-                    }
-                },
-                values: [1, {
-                    {
-                        classes.class_no__max
-                    }
-                }],
+                max: {{ classes.class_no__max }},
+                values: [1, {{ classes.class_no__max }}],
                 slide: function(event, ui) {
                     $("#class_slider").val("" + ui.values[0] + " - " + ui.values[1]);
                 }
@@ -191,7 +183,6 @@
 
                 <div id='button_container' style="display: none">
                     <button id='filter_button' type="submit" class="btn btn-primary">Filter</button>
-                    <input id='reset_button' class="btn btn-secondary" type="reset" value="Reset">
                 </div>
 
 
