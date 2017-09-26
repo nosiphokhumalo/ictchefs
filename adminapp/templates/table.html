@@ -7,28 +7,32 @@
     </thead>
     <tbody>
         <tr>
-            <th>Total Accepted</th>
+            <th>Accepted</th>
             <td>{{ all_students }}</td>
         </tr>
         <tr>
-            <th>Total Graduates</th>
+            <th>Graduates</th>
             <td>{{ graduates }}</td>
         </tr>
         <tr>
-            <th>Total Dropouts</th>
+            <th>Dropouts</th>
             <td>{{ dropouts }}</td>
         </tr>
         <tr>
-            <th>Total Deceased</th>
-            <td>{{ deceased}}</td>
-        </tr>
-        <tr>
-            <th>Total Employed</th>
+            <th>Employed</th>
             <td>{{ employed }}</td>
         </tr>
         <tr>
-            <th>Total Unemployed</th>
+            <th>Unemployed</th>
             <td>{{ unemployed }}</td>
+        </tr>
+        <tr>
+            <th>Employed %</th>
+            <td>{{ employed }}/{{ all_students }}*100</td>
+        </tr>
+        <tr>
+            <th>Deceased</th>
+            <td>{{ deceased}}</td>
         </tr>
     </tbody>
 </table>
