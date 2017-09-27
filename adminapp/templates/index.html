@@ -1,29 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
-    <title>Main Menu</title>
+    <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
 </head>
 
-<body>
+<body style="background:#5D6D7E;">
     <div class="container-fluid">
-        <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#">Home</a>
-            </li>
-            <li><a href="/add/">Add Student</a>
-            </li>
-            <li><a href="/test/">View Students</a>
-            </li>
-            <li><a href="#">View Graduates</a>
-            </li>
-            <li><a href="/statistics/">View Statistics</a>
-            </li>
-        </ul>
+  <form class="form-horizontal" id='myForm' style='width:450px; margin-top: 140px; margin-bottom: 140px; margin-left: 410px; padding: 0.5cm 0.5cm 0.5cm 0.5cm; background: #D5DBDB;'>
+  <h2 class="form-signin-heading">Please login</h2>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="username">Username:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required autofocus="">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="password">Password:</label>
+      <div class="col-sm-10">          
+        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+      </div>
+    </div>
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <div class="checkbox">
+          <label><input type="checkbox" name="remember"> Remember me</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button id='login_button' type="submit" class="btn btn-lg btn-primary btn-block" style="border-radius: 24px;">Login</button>
+      </div>
+    </div>
+  </form>	
     </div>
 </body>
 

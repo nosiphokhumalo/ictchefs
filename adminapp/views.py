@@ -16,6 +16,9 @@ class HomePageView(TemplateView):
     def get(self, request, **kwargs):
         return render(request, 'index.html', context=None)
 
+class MenuPageView(TemplateView):
+    template_name = "menu.html"
+
 class AddPageView(TemplateView):
     template_name = "addStudents.html"
     
