@@ -26,7 +26,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="/">Home</a>
+                <a class="navbar-brand" href="/menu/">Home</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Add Student</a>
@@ -35,11 +35,13 @@
                 </li>
                 <li><a href="#">View Graduates</a>
                 </li>
+                <li><a href="#">View Dropouts</a>
+                </li>
                 <li><a href="/statistics/">View Statistics</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-        	<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        	<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       	    </ul>
         </div>
     </nav>
@@ -72,7 +74,8 @@
                         <label class="control-label" for="date">Class:</label>
                         <input type="number" id="class_no" name="class_no" min="1" max={{classes.class_no__max}} required>
                     </div>
-
+		    <br></br>
+		    <p></p> 
                     <button id='save_button' type="submit" class="btn btn-primary">Submit</button>
                     <button id='reset_button' type="reset" class="btn btn-secondary">Reset</button>
                     <button id='cancel_button' type="button" class="btn btn-default">Cancel</button>
@@ -81,7 +84,8 @@
             <div style="margin-left: 500px; padding: 0.5cm 0cm 1cm 0cm">
                 <form id="form1" runat="server">
                     <label class="control-label" for="file">Picture:</label>
-                    <input type='file' id='file' />
+                    <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>
+                    <p></p>    
                     <img id="imagePreview" src="#" alt="your image" style="width: 85%; height: 350px" />
                 </form>
             </div>
