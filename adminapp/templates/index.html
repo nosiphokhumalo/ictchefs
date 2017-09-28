@@ -9,39 +9,59 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
+    <style>
+    	.panel {
+    max-width: 430px;
+    margin: 0 auto 20px;
+    padding: 20px 20px 20px 20px;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: #CD6155   !important;
+    border-color: #CD6155 !important;
+}
+
+    </style>
 </head>
 
-<body style="background:#5D6D7E;">
+<body style="background:#670000;">
     <div class="container-fluid">
-  <form class="form-horizontal" id="login-form" method="post" action="{% url 'login' %}" style='width:450px; margin-top: 140px; margin-bottom: 140px; margin-left: 410px; padding: 0.5cm 0.5cm 0.5cm 0.5cm; background: #D5DBDB;'>
+    	<div class="logo" style="text-align: center; padding-top: 1.5cm; padding-bottom: 1cm;">
+    	    <img src="http://www.ictchefs.org/wp-content/uploads/2013/07/ictchefs-logo-website.png" alt="Infinity Culinary Training">
+        </div>
+    	<div class="panel">
+    	<h3 style="text-align: center; padding-bottom: 0.2cm; color: #670000;">Please log in</h3>
+    		  <form  id="login-form" method="post" action="{% url 'login' %}" style="padding-left: 0.3cm;">
   {% csrf_token %}
-  <h2 class="form-signin-heading">Please login</h2>
     <div class="form-group">
-      <label class="control-label col-sm-2" for="username">Username:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required autofocus="">
-      </div>
+      
+
+      	<label for="username">Username:</label>
+      
+      	<input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required autofocus="">
+     
+        
     </div>
     <div class="form-group">
-      <label class="control-label col-sm-2" for="password">Password:</label>
-      <div class="col-sm-10">          
-        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
-      </div>
+      <label for="password">Password:</label>
+      <input autocomplete="off" type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+        
+     
     </div>
     <div class="form-group">        
-      <div class="col-sm-offset-2 col-sm-10">
+
         <div class="checkbox">
           <label><input type="checkbox" name="remember"> Remember me</label>
         </div>
-      </div>
     </div>
-    <div class="form-group">        
-      <div class="col-sm-offset-2 col-sm-10">
-        <button id='login_button' type="submit" class="btn btn-lg btn-primary btn-block" style="border-radius: 24px;">Login</button>
-      </div>
-    </div>
-  </form>	
+          
+      
+    <button id='login_button' type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+      
+  
+  </form>
+    	</div>
     </div>
 </body>
 
