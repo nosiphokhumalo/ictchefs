@@ -98,19 +98,5 @@ def filter(request):
     return render(request, 'table.html', data)
     
 
-
-class StudentList(APIView):
-    def get(self, request, format=None):
-        students = Student.objects.all()
-        serializer = StudentSerializer(students, many=True)
-        return Response(serializer.data)
-
-    def post(self, request, format=None):
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         
 
