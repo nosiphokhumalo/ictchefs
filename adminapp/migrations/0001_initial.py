@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+from django.conf import settings
 
 
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
@@ -49,6 +51,7 @@ class Migration(migrations.Migration):
                 ('id_no', models.CharField(null=True, blank=True, max_length=50)),
                 ('deceased', models.IntegerField(null=True, blank=True)),
                 ('image_path', models.CharField(null=True, blank=True, max_length=100)),
+                ('user', models.ForeignKey(null=True, to=settings.AUTH_USER_MODEL, blank=True)),
             ],
             options={
                 'db_table': 'student',
@@ -62,7 +65,7 @@ class Migration(migrations.Migration):
                 ('grad_or_student', models.CharField(null=True, blank=True, max_length=10)),
                 ('year', models.IntegerField(null=True, blank=True)),
                 ('dropout', models.IntegerField(null=True, blank=True)),
-                ('student', models.ForeignKey(related_name='student_info', db_column='student_id', to='adminapp.Student')),
+                ('student', models.ForeignKey(to='adminapp.Student', db_column='student_id', related_name='student_info')),
             ],
             options={
                 'db_table': 'student_info',
@@ -73,7 +76,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('placement', models.CharField(null=True, blank=True, max_length=100)),
-                ('student', models.ForeignKey(related_name='weekend_placement', db_column='student_id', to='adminapp.Student')),
+                ('student', models.ForeignKey(to='adminapp.Student', db_column='student_id', related_name='weekend_placement')),
             ],
             options={
                 'db_table': 'weekend_placement',
@@ -82,16 +85,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='employmentinfo',
             name='student',
-            field=models.ForeignKey(related_name='employment_info', db_column='student_id', to='adminapp.Student'),
+            field=models.ForeignKey(to='adminapp.Student', db_column='student_id', related_name='employment_info'),
         ),
         migrations.AddField(
             model_name='employmenthistory',
             name='student',
-            field=models.ForeignKey(related_name='employment_history', db_column='student_id', to='adminapp.Student'),
+            field=models.ForeignKey(to='adminapp.Student', db_column='student_id', related_name='employment_history'),
         ),
         migrations.AddField(
             model_name='contactdetails',
             name='student',
-            field=models.ForeignKey(related_name='contact_details', db_column='student_id', to='adminapp.Student'),
+            field=models.ForeignKey(to='adminapp.Student', db_column='student_id', related_name='contact_details'),
         ),
     ]

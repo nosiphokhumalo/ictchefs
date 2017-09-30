@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-
+import json
 # Create your views here.
 class HomePageView(TemplateView):
     def get(self, request, **kwargs):
@@ -106,11 +106,17 @@ class StudentList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        sname = request.data['name']
+        sid_no = request.data['id_no']
+        try:
+            obj = Student.objects.get(name=sname, id_no=sid_no)
+        except Student.DoesNotExist:
+            serializer = StudentSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse("Student already in database")
 
         
 
