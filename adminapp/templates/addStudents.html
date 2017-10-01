@@ -20,31 +20,34 @@
             }
         }
     </script>
+    <style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus {
+        color: white;
+        background-color: #670000;
+    }
+
+        .nav-pills > li.active > a:hover {
+            background-color: #CD6155;
+            color:white;
+        }
+        
+        .nav-pills > li > a, .nav-pills > li > a:focus {
+        color: #670000;
+        background-color: white;
+    }
+</style>
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/menu/">Home</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Add Student</a>
-                </li>
-                <li><a href="#">View Students</a>
-                </li>
-                <li><a href="#">View Graduates</a>
-                </li>
-                <li><a href="#">View Dropouts</a>
-                </li>
-                <li><a href="/statistics/">View Statistics</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-        	<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-      	    </ul>
-        </div>
-    </nav>
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
+      <li class="active"><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
+      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
+      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
+      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
+      <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout {{request.user.username}}</a></li>
+    </ul>
     <div class="container-fluid">
         <h1 style= "text-align: center;">Add Student</h1>
         <div class="alert alert-success" id="success-alert" style="display:none"> Student saved successfully!</div>
@@ -78,13 +81,13 @@
 		    <p></p> 
                     <button id='save_button' type="submit" class="btn btn-primary">Submit</button>
                     <button id='reset_button' type="reset" class="btn btn-secondary">Reset</button>
-                    <button id='cancel_button' type="button" class="btn btn-default">Cancel</button>
+                    <button id='cancel_button' type="button" class="btn btn-default" >Cancel</button>
                 </form>
             </div>
             <div style="margin-left: 500px; padding: 0.5cm 0cm 1cm 0cm">
                 <form id="form1" runat="server">
                     <label class="control-label" for="file">Picture:</label>
-                    <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>
+                    <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>    
                     <p></p>    
                     <img id="imagePreview" src="#" alt="your image" style="width: 85%; height: 350px" />
                 </form>

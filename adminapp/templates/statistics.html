@@ -101,32 +101,42 @@
             Highcharts.chart('chart_container', data);
         }
     </script>
+    <script>
+    function Scrolldown() {
+     window.scroll(0,300); 
+}
+
+window.onload = Scrolldown;
+    </script>
+<style>
+    .nav-pills > li.active > a, .nav-pills > li.active > a:focus {
+        color: white;
+        background-color: #670000;
+    }
+
+        .nav-pills > li.active > a:hover {
+            background-color: #CD6155;
+            color:white;
+        }
+        
+        .nav-pills > li > a, .nav-pills > li > a:focus {
+        color: #670000;
+        background-color: white;
+    }
+</style>
     {% csrf_token %}
 </head>
 
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/menu/">Home</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="/add/">Add Student</a>
-                </li>
-                <li><a href="#">View Students</a>
-                </li>
-                <li><a href="#">View Graduates</a>
-                </li>
-                <li><a href="#">View Dropouts</a>
-                </li>
-                <li class="active"><a href="#">View Statistics</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-        	<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-      	    </ul>
-        </div>
-    </nav>
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
+      <li><a href="/add/"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
+      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
+      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
+      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li class="active"><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
+      <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout {{request.user.username}}</a></li>
+    </ul>
     <div class="container-fluid">
         <h1 style= "text-align: center;">Statistics</h1>
         <div class="row" style="padding-left: 0.5cm;">
