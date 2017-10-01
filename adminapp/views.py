@@ -98,8 +98,6 @@ def filter(request):
     return render(request, 'table.html', data)
     
 
-<<<<<<< HEAD
-
 class StudentList(APIView):
     def get(self, request, format=None):
         students = Student.objects.all()
@@ -119,7 +117,5 @@ class StudentList(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return HttpResponse("Student already in database")
 
-=======
->>>>>>> 5075d025caa29dfd7acb20b9e18a6d2b297e6104
         
 
