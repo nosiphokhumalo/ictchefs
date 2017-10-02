@@ -30,9 +30,17 @@
     <div class="container-fluid" style="font-size: 18px;">
         <div class="logo" style="padding-top: 0.2cm; padding-bottom: 1cm;">
     	    <img src="http://www.ictchefs.org/wp-content/uploads/2013/07/ictchefs-logo-website.png" alt="Infinity Culinary Training">
-    	    <button id='logout_button' type="button" class="btn btn-default btn-lg" style="float: right; margin-top: 1cm; color: #670000;"> Logout {{request.user.username}}</button>
+    	    <a href="/logout/" class="btn btn-default btn-lg" role="button" style="float: right; margin-top: 1cm; color: #670000;">Logout {{request.user.username}}</a>
     	    
         </div>
+                 {% if messages %}
+  {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }}" id="success-alert" style="background: white; font-size: 15px;"{% endif %}>
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
         <div class="row" style="margin-left: 2.3cm; padding-top: 1.5cm;">
       <div class="col-md-2 col-sm-4 col-xs-6">
         <div class="dummy">

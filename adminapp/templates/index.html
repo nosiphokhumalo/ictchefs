@@ -30,6 +30,14 @@
     	<div class="logo" style="text-align: center; padding-top: 1.5cm; padding-bottom: 1cm;">
     	    <img src="http://www.ictchefs.org/wp-content/uploads/2013/07/ictchefs-logo-website.png" alt="Infinity Culinary Training">
         </div>
+         {% if messages %}
+  {% for message in messages %}
+    <div{% if message.tags %} class="alert alert-{{ message.tags }}" style="background: white"{% endif %}>
+      <a class="close" data-dismiss="alert" href="#">&times;</a>
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
     	<div class="panel">
     	<h3 style="text-align: center; padding-bottom: 0.2cm; color: #670000;">Please log in</h3>
     		  <form  id="login-form" method="post" action="{% url 'login' %}" style="padding-left: 0.3cm;">

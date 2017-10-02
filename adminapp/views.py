@@ -10,6 +10,8 @@ from django.template import RequestContext
 from .models import Student, StudentInfo
 from django.http import Http404
 
+from django.contrib import messages
+
 from adminapp.serializers import StudentSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -29,12 +31,18 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user:
             if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect('/menu/')
+                if user.is_superuser:
+                    login(request, user)
+                    messages.add_message(request, messages.SUCCESS, "You are now logged in.")
+                    return redirect('/menu/')
+                else:
+                    return HttpResponse("Your account doesn't have access to this page. To proceed, please login with an account that has access.")  
             else:
-                return HttpResponse("Your account is disabled.")
+            	messages.add_message(request, messages.ERROR, "Your account is disabled. To proceed, please login with an account that is active.")
+            	return redirect('/')
         else:
-            return HttpResponse("Invalid login details supplied. Please try again.")
+            messages.add_message(request, messages.ERROR, "Your username and password didn't match. Please try again.")
+            return redirect('/')
 
     # The request is not a HTTP POST, so display the login form.
     else:
@@ -45,9 +53,9 @@ def user_login(request):
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
-
+    messages.add_message(request, messages.INFO, "You have been logged out.")
     # Take the user back to the homepage.
-    return HttpResponseRedirect('/')
+    return redirect('/')
 
         
 class MenuPageView(TemplateView):
