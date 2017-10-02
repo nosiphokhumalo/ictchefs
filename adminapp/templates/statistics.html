@@ -20,6 +20,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+    function calc(){
+    	var employed = {{ employed }};
+	var all_students = {{ all_students }};
+	var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
+document.getElementById("yourSavings").innerHTML = percentage;
+    }
+    </script>
+    <script>
         var myDate = new Date();
         var year = myDate.getFullYear();
         $(function() {
@@ -93,8 +101,8 @@
                 },
                 tooltip: {
                     formatter: function() {
-                        return '<b>' + this.series.name + '</b><br/>' +
-                            this.point.y + ' ' + this.point.name.toLowerCase();
+                        return '<b>' + this.point.name + '</b><br/>' +
+                            this.point.y;
                     }
                 }
             }
@@ -127,7 +135,7 @@ window.onload = Scrolldown;
     {% csrf_token %}
 </head>
 
-<body>
+<body onload="calc();">
     <ul class="nav nav-pills nav-justified">
       <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
       <li><a href="/add/"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
@@ -135,7 +143,7 @@ window.onload = Scrolldown;
       <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
       <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Dropouts</a></li>
       <li class="active"><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
-      <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout {{request.user.username}}</a></li>
+      <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
     </ul>
     <div class="container-fluid">
         <h1 style= "text-align: center;">Statistics</h1>

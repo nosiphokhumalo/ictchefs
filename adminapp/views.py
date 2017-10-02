@@ -123,7 +123,8 @@ class StudentList(APIView):
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return HttpResponse("Student already in database")
+        messages.add_message(request._request, messages.SUCCESS, "Student already in database")
+        return redirect('/add/')
 
         
 

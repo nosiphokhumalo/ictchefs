@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <th>Employed %</th>
-            <td>{{ employed }}/{{ all_students }}*100</td>
+            <td id="yourSavings"></td>
         </tr>
         <tr>
             <th>Deceased</th>
@@ -36,3 +36,9 @@
         </tr>
     </tbody>
 </table>
+<script>
+var employed = {{ employed }};
+	var all_students = {{ all_students }};
+	var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
+document.getElementById("yourSavings").innerHTML = percentage;
+</script>
