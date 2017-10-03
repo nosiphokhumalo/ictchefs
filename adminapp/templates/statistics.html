@@ -8,34 +8,31 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- Latest compiled and minified CSS -->
+    {% load static %}
+    <link rel="stylesheet" type= "text/css" href="{% static 'css/statistics.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
-    function calc(){
-    	var employed = {{ employed }};
-	var all_students = {{ all_students }};
-	var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
-document.getElementById("yourSavings").innerHTML = percentage;
-    }
-    </script>
-    <script>
-        var myDate = new Date();
-        var year = myDate.getFullYear();
+        function calc(){
+        	var employed = {{ employed }};
+	    	var all_students = {{ all_students }};
+			var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
+			document.getElementById("myPercentage").innerHTML = percentage;
+    	}
+	</script>
+	<script>
         $(function() {
-            $("#year-range").slider({
+        	$("#year-range").slider({
                 range: true,
                 min: 2009,
-                max: parseInt(year),
-                values: [2009, parseInt(year)],
+                max: {{ years.year__max }},
+                values: [2009, {{ years.year__max }}],
                 slide: function(event, ui) {
                     $("#year_slider").val("" + ui.values[0] + " - " + ui.values[1]);
                 }
@@ -43,10 +40,8 @@ document.getElementById("yourSavings").innerHTML = percentage;
             $("#year_slider").val("" + $("#year-range").slider("values", 0) +
                 " - " + $("#year-range").slider("values", 1));
         });
-    </script>
-    <script>
-        var myDate = new Date();
-        var year = myDate.getFullYear();
+	</script>
+	<script>
         $(function() {
             $("#class-range").slider({
                 range: true,
@@ -83,7 +78,7 @@ document.getElementById("yourSavings").innerHTML = percentage;
                     type: 'column'
                 },
                 title: {
-                    text: 'Statistics'
+                    text: 'Statistics showing student performance'
                 },
                 yAxis: {
                     allowDecimals: false,
@@ -110,28 +105,12 @@ document.getElementById("yourSavings").innerHTML = percentage;
         }
     </script>
     <script>
-    function Scrolldown() {
-     window.scroll(0,300); 
-}
+    	function Scrolldown() {
+     		window.scroll(0,300); 
+		}
 
-window.onload = Scrolldown;
+		window.onload = Scrolldown;
     </script>
-<style>
-    .nav-pills > li.active > a, .nav-pills > li.active > a:focus {
-        color: white;
-        background-color: #670000;
-    }
-
-        .nav-pills > li.active > a:hover {
-            background-color: #CD6155;
-            color:white;
-        }
-        
-        .nav-pills > li > a, .nav-pills > li > a:focus {
-        color: #670000;
-        background-color: white;
-    }
-</style>
     {% csrf_token %}
 </head>
 
@@ -141,12 +120,12 @@ window.onload = Scrolldown;
       <li><a href="/add/"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
       <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
       <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
-      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
       <li class="active"><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
       <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
     </ul>
     <div class="container-fluid">
-        <h1 style= "text-align: center;">Statistics</h1>
+        <h1 style= "text-align: center;">View Statistics</h1>
         <div class="row" style="padding-left: 0.5cm;">
             <div class="col-lg-2" id="left">
                 <h4>Filter:</h4>
@@ -208,9 +187,6 @@ window.onload = Scrolldown;
                 <div id='button_container' style="display: none">
                     <button id='filter_button' type="submit" class="btn btn-primary">Filter</button>
                 </div>
-
-
-
                 {% csrf_token %}
                 <script>
                     var csrftoken = $('input[name="csrfmiddlewaretoken"]').val();

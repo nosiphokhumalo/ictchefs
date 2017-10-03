@@ -17,8 +17,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-import json
-# Create your views here.
 class HomePageView(TemplateView):
     def get(self, request, **kwargs):
         return render(request, 'index.html', context=None)
@@ -48,7 +46,7 @@ def user_login(request):
     else:
         return render(request, 'index.html', context)
 
-# Use the login_required() decorator to ensure only those logged in can access the view.
+# login_required() decorator to ensure only those logged in can access the view.
 @login_required(login_url='/login/')
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
@@ -87,10 +85,11 @@ class StatisticsPageView(TemplateView):
             employed = students.filter(employment_info__current_employment__isnull=False).count()
             unemployed = students.filter(employment_info__current_employment__isnull=True).count()
             classes = StudentInfo.objects.all().aggregate(Max('class_no'))
+            years = StudentInfo.objects.all().aggregate(Max('year'))
         except (Student.DoesNotExist) as e:
             raise Http404('Student does not exist')
         return render(request, self.template_name,
-                      {'all_students': all_students, 'deceased': deceased, 'graduates': graduates, 'dropouts': dropouts, 'employed': employed, 'unemployed': unemployed, 'classes': classes})
+                      {'all_students': all_students, 'deceased': deceased, 'graduates': graduates, 'dropouts': dropouts, 'employed': employed, 'unemployed': unemployed, 'classes': classes, 'years': years})
 
 @login_required(login_url='/login/')			
 def filter(request):

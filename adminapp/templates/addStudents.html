@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load static %}
+    <link rel="stylesheet" type= "text/css" href="{% static 'css/addStudent.css' %}">
     <!--  jQuery -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,22 +22,6 @@
             }
         }
     </script>
-    <style>
-    .nav-pills > li.active > a, .nav-pills > li.active > a:focus {
-        color: white;
-        background-color: #670000;
-    }
-
-        .nav-pills > li.active > a:hover {
-            background-color: #CD6155;
-            color:white;
-        }
-        
-        .nav-pills > li > a, .nav-pills > li > a:focus {
-        color: #670000;
-        background-color: white;
-    }
-</style>
 </head>
 
 <body>
@@ -44,7 +30,7 @@
       <li class="active"><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
       <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
       <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
-      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
       <li><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
       <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
     </ul>
@@ -59,10 +45,9 @@
   {% endfor %}
 {% endif %}
         <div class="alert alert-success" id="success-alert" style="display:none"> Student saved successfully!</div>
-        <div class="alert alert-danger" id="danger-alert" style="display:none"> Please fill out all required fields</div>
         <div id="body_container" style="overflow: hidden; ">
             <div id="form_container" style=" float: left;">
-                <form id='myForm' style='width:400px; padding: 0.5cm 0cm 0cm 0.5cm'>
+                <form id='myForm' style='width:450px; padding: 0.5cm 0cm 0cm 0.5cm'>
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
@@ -91,12 +76,12 @@
                     <button id='cancel_button' type="button" class="btn btn-default" >Cancel</button>
                 </form>
             </div>
-            <div style="margin-left: 500px; padding: 0.5cm 0cm 1cm 0cm">
+            <div style="margin-left: 550px; padding: 0.5cm 0cm 1cm 0cm">
                 <form id="form1" runat="server">
                     <label class="control-label" for="file">Picture:</label>
                     <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>    
                     <p></p>    
-                    <img id="imagePreview" src="#" alt="your image" style="width: 85%; height: 350px" />
+                    <img id="imagePreview" src="#" alt="your image" style="width: 75%; height: 350px" />
                 </form>
             </div>
 
@@ -104,7 +89,7 @@
     </div>
     <script>
         $(document).ready(function() {
-            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var date_input = $('input[name="date"]');
 
             var options = {
                 format: ' yyyy',
@@ -150,10 +135,7 @@
         });
         $("#save_button").click(function(event) {
             if (!validateForm()) {
-                $("#danger-alert").show();
-                setTimeout(function() {
-                    $("#danger-alert").hide();
-                }, 2000);
+               
             } else {
                 event.preventDefault();
                 var name = $('#name').val();

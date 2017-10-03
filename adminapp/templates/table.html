@@ -1,8 +1,10 @@
 <table id="datatable" border="1" class="table table-bordered">
     <thead>
+        <col width="130">
+        <col width="130">
         <tr>
             <th></th>
-            <th>Number of Students</th>
+            <th>Statistics</th>
         </tr>
     </thead>
     <tbody>
@@ -27,12 +29,12 @@
             <td>{{ unemployed }}</td>
         </tr>
         <tr>
-            <th>Employed %</th>
-            <td id="yourSavings"></td>
-        </tr>
-        <tr>
             <th>Deceased</th>
             <td>{{ deceased}}</td>
+        </tr>
+        <tr>
+            <th>Employed %</th>
+            <td id="myPercentage"></td>
         </tr>
     </tbody>
 </table>
@@ -40,5 +42,5 @@
 var employed = {{ employed }};
 	var all_students = {{ all_students }};
 	var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
-document.getElementById("yourSavings").innerHTML = percentage;
+document.getElementById("myPercentage").innerHTML = percentage;
 </script>

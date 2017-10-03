@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -8,22 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load static %}
+    <link rel="stylesheet" type= "text/css" href="{% static 'css/menu.css' %}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <style>
-        .dummy {
-    margin-top: 100%;
-}
-.thumbnail {
-    position: absolute;
-    top: 15px;
-    bottom: 10;
-    left: 15px;
-    right:0;
-    text-align:center;
-    padding-top:calc(50% - 70px);
-}
-  </style>
 </head>
 
 <body style="background:#670000;">
@@ -42,34 +29,32 @@
   {% endfor %}
 {% endif %}
         <div class="row" style="margin-left: 2.3cm; padding-top: 1.5cm;">
-      <div class="col-md-2 col-sm-4 col-xs-6">
-        <div class="dummy">
-        </div>
-        <a href="/add/" class="thumbnail purple" style="color: #670000;"><i class="fa fa-user-plus fa-5x" aria-hidden="true"></i><br><br>Add Student</a>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6">
-        <div class="dummy">
-        </div>
-        <a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-list-ul fa-5x" aria-hidden="true"></i><br><br>View Students</a>
-      </div>
-      <div class="col-md-2 col-sm-4 col-xs-6">
-        <div class="dummy">
-        </div>
-        <a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-graduation-cap fa-5x" aria-hidden="true"></i><br><br>View Graduates</a>
-      </div>
-       <div class="col-md-2 col-sm-4 col-xs-6">
-        <div class="dummy">
-        </div>
-        <a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-area-chart fa-5x" aria-hidden="true"></i><br><br>View Dropouts</a>
-	   </div>
-       <div class="col-md-2 col-sm-4 col-xs-6">
-        <div class="dummy">
-        </div>
-        <a href="/statistics/" class="thumbnail purple" style="color: #670000;"><i class="fa fa-bar-chart fa-5x" aria-hidden="true"></i><br><br>View Statistics</a>
-      </div>
-
-      
-  	</div>
+      		<div class="col-md-2 col-sm-4 col-xs-6">
+        		<div class="dummy">
+        		</div>
+        		<a href="/add/" class="thumbnail purple" style="color: #670000;"><i class="fa fa-user-plus fa-5x" aria-hidden="true"></i><br><br>Add Student</a>
+      		</div>
+      		<div class="col-md-2 col-sm-4 col-xs-6">
+        		<div class="dummy">
+        		</div>
+        		<a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-list-ul fa-5x" aria-hidden="true"></i><br><br>View Students</a>
+      		</div>
+      		<div class="col-md-2 col-sm-4 col-xs-6">
+        		<div class="dummy">
+        		</div>
+        		<a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-graduation-cap fa-5x" aria-hidden="true"></i><br><br>View Graduates</a>
+      		</div>
+       		<div class="col-md-2 col-sm-4 col-xs-6">
+        		<div class="dummy">
+        		</div>
+        		<a href="#" class="thumbnail purple" style="color: #670000;"><i class="fa fa-list-ul fa-5x" aria-hidden="true"></i><br><br>View Dropouts</a>
+	   		</div>
+       		<div class="col-md-2 col-sm-4 col-xs-6">
+        		<div class="dummy">
+        		</div>
+        		<a href="/statistics/" class="thumbnail purple" style="color: #670000;"><i class="fa fa-bar-chart fa-5x" aria-hidden="true"></i><br><br>View Statistics</a>
+      		</div>  
+  		</div>
     </div>
 </body>
 

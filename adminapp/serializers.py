@@ -1,6 +1,7 @@
 from .models import Student, StudentInfo, ContactDetails
-
+from django.contrib.auth.models import User
 from rest_framework import serializers
+
 
 class ContactDetailsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +31,16 @@ class StudentSerializer(serializers.ModelSerializer):
         for info_data in student_info_data:
             StudentInfo.objects.create(student=student, **info_data)
         return student
+        
+class UserSerializer(serializers.ModelSerializer):
+    student = StudentSerializer()
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'student')
+
+    def create(self, validated_data):
+        student_data = validated_data.pop('student')
+        user = User.objects.create(**validated_data)
+        Student.objects.create(user=user, **student_data)
+        return user
