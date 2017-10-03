@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.contrib.auth.models import User
 from django.db import models
 
 class Student(models.Model):
@@ -7,13 +7,15 @@ class Student(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     id_no = models.CharField(max_length=50, blank=True, null=True)
     deceased = models.IntegerField(blank=True, null=True)
-    image_path = models.CharField(max_length=100, blank=True, null=True)
+    image_path = models.CharField(max_length=100, blank=True, null=True, default=None)
+    file_path = models.CharField(max_length=100, blank=True, null=True, default=None)
+    user = models.ForeignKey(User, related_name='student', default=1)
+    password = models.CharField(max_length=50, default=None, blank=True, null=True)
+    activated = models.IntegerField(default=0, blank=True, null=True)
+    address = models.CharField(default='South Africa', max_length=50, blank=True, null=True)
 
     class Meta:
         db_table = 'student'
-    
-    def __unicode__(self):
-        return self.name
 
 
 class ContactDetails(models.Model):
