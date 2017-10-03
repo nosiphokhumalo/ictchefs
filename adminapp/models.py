@@ -6,7 +6,7 @@ class Student(models.Model):
     student_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, blank=True, null=True)
     id_no = models.CharField(max_length=50, blank=True, null=True)
-    deceased = models.IntegerField(blank=True, null=True)
+    deceased = models.IntegerField(blank=True, null=True, default=0)
     image_path = models.CharField(max_length=100, blank=True, null=True, default=None)
     file_path = models.CharField(max_length=100, blank=True, null=True, default=None)
     user = models.ForeignKey(User, related_name='student', default=1)
@@ -53,9 +53,9 @@ class StudentInfo(models.Model):
     id = models.AutoField(primary_key=True)
     student = models.ForeignKey(Student, db_column='student_id', related_name='student_info', on_delete=models.CASCADE)
     class_no = models.IntegerField(blank=True, null=True)
-    grad_or_student = models.CharField(max_length=10, blank=True, null=True)
+    grad_or_student = models.CharField(max_length=10, blank=True, null=True, default='student')
     year = models.IntegerField(blank=True, null=True)
-    dropout = models.IntegerField(blank=True, null=True)
+    dropout = models.IntegerField(blank=True, null=True, default=0)
 
     class Meta:
         db_table = 'student_info'

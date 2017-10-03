@@ -11,7 +11,7 @@ class ContactDetailsSerializer(serializers.ModelSerializer):
 class StudentInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentInfo
-        fields = ('class_no', 'grad_or_student', 'year', 'dropout')
+        fields = ('class_no', 'year')
 		
 class StudentSerializer(serializers.ModelSerializer):
 
@@ -20,7 +20,7 @@ class StudentSerializer(serializers.ModelSerializer):
     student_info = StudentInfoSerializer(many=True)
     class Meta:
         model = Student
-        fields = ('student_id', 'name', 'id_no', 'deceased', 'image_path', 'contact_details', 'student_info')
+        fields = ('student_id', 'name', 'id_no', 'image_path', 'contact_details', 'student_info')
     
     def create(self, validated_data):
         contact_details_data = validated_data.pop('contact_details')
