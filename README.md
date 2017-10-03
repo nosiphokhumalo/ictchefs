@@ -1,41 +1,15 @@
-$project
-========
+# ${1:ICT Admin}
 
-$project will solve your problem of where to start with documentation,
-by providing a basic explanation of how to do it easily.
+This is a data management system that enables admin of Ininity Culinary Training to store and manage student information.
 
-Look how easy it is to use:
+## Usage
 
-    import project
-    # Get your stuff done
-    project.do_stuff()
+``` bash
 
-Features
---------
+python manage.py runserver 
 
-- Be awesome
-- Make things faster
+## Features
+ 1. Store student information
+ 2. View overall statistics
+ 3. Filter statistics by year(s) of admission or class number(s)
 
-Installation
-------------
-
-Install $project by running:
-
-    install project
-
-Contribute
-----------
-
-- Issue Tracker: github.com/$project/$project/issues
-- Source Code: github.com/$project/$project
-
-Support
--------
-
-If you are having issues, please let us know.
-We have a mailing list located at: project@google-groups.com
-
-License
--------
-
-The project is licensed under the BSD license.
