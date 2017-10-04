@@ -1,6 +1,12 @@
 # ${1:ICT Admin}
 
-This is a data management system that enables admin of Ininity Culinary Training to store and manage student information.
+This is a data management system that enables admin staff of Ininity Culinary Training to store and manage student information.
+
+## Dependencies
+
+Python 3.5.2
+
+Django 1.8
 
 ## Usage
 
@@ -12,4 +18,9 @@ python manage.py runserver
  1. Store student information
  2. View overall statistics
  3. Filter statistics by year(s) of admission or class number(s)
+
+## Documentation
+
+ 1. User Guide.pdf: Explains how to use the system
+ 2. Design Guide.pdf: Explains key functions
 
