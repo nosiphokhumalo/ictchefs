@@ -103,7 +103,13 @@ def filter(request):
     	students = Student.objects.filter(student_info__class_no__range=(classstart, classend))
     data = {'all_students': students.count(), 'deceased': students.filter(deceased=1).count(), 'graduates': students.filter(student_info__grad_or_student='grad').count(), 'dropouts': students.filter(student_info__dropout=1).count(), 'employed': students.filter(employment_info__current_employment__isnull=False).count(), 'unemployed': students.filter(employment_info__current_employment__isnull=True).count()}
     return render(request, 'table.html', data)
-    
+ 
+def handle_uploaded_file(file, filename):
+	with open('static/' + filename, 'wb+') as destination:
+		for chunk in file.chunks():
+			destination.write(chunk)   
+
+
 
 class StudentList(APIView):
     def get(self, request, format=None):
@@ -116,14 +122,17 @@ class StudentList(APIView):
         sid_no = request.data['id_no']
         try:
             obj = Student.objects.get(name=sname, id_no=sid_no)
+            messages.add_message(request._request, messages.INFO, "Student is already in database")
         except Student.DoesNotExist:
-            serializer = StudentSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        messages.add_message(request._request, messages.SUCCESS, "Student already in database")
-        return redirect('/add/')
+            try:
+            	handle_uploaded_file(request.FILES['image'], str(request.FILES['image']))
+            except:
+            	serializer = StudentSerializer(data=request.data)
+            	if serializer.is_valid():
+                	serializer.save()
+                	return Response(serializer.data, status=status.HTTP_201_CREATED)
+            	return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse('An error occured')
 
         
 

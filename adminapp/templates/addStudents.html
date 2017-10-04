@@ -156,7 +156,27 @@
                         "year": date
                     }]
                 }
+				var x = document.getElementById("file");
+				var image = x.files[0];
+				formData = new FormData(); 
+				if (formData){
+    				formData.append("image", image);
 
+    				$.ajax({
+        				url : "/students/"
+        				type : "POST",
+        				data : formData,
+        				processData: false,
+        				contentType: false,
+
+        				success : function() {
+        				},
+        				error : function(xhr,errmsg,err) {
+            				console.log(xhr.status + ": " + xhr.responseText);
+        				}
+    				});
+
+				}
                 $.ajax({
                     type: "POST",
                     url: "/students/",
@@ -175,9 +195,9 @@
                             $("#success-alert").hide();
                         }, 5000);
                     },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
-                    }
+                    error : function(xhr,errmsg,err) {
+            				console.log(xhr.status + ": " + xhr.responseText);
+        			}
                 });
             }
         });
