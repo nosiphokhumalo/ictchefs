@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'adminapp',
     'highcharts',
 
-    
+
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ict_studentdb',
         'USER': 'root',
-        'PASSWORD': 'aucom',
+        'PASSWORD': 'password',
     }
 }
 
