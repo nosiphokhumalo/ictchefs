@@ -1,6 +1,6 @@
 # CHEFREG
 
-This is a web-based data management system created for my honours project. The system enables admin staff of Ininity Culinary Training, a chef school,  to store and manage student information.
+This is a web-based data management system created for my honours project. The system enables admin staff of Infinity Culinary Training, a chef school,  to store and manage student information.
 
 ## Features
  1. Store student information
