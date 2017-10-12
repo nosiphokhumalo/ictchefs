@@ -32,19 +32,19 @@ def user_login(request):
                 if user.is_superuser:
                     login(request, user)
                     messages.add_message(request, messages.SUCCESS, "You are now logged in.")
-                    return redirect('/menu/')
+                    return redirect('/')
                 else:
                     return HttpResponse("Your account doesn't have access to this page. To proceed, please login with an account that has access.")
             else:
             	messages.add_message(request, messages.ERROR, "Your account is disabled. To proceed, please login with an account that is active.")
-            	return redirect('/')
+            	return redirect('/login-form/')
         else:
             messages.add_message(request, messages.ERROR, "Your username and password didn't match. Please try again.")
-            return redirect('/')
+            return redirect('/login-form/')
 
     # The request is not a HTTP POST, so display the login form.
     else:
-        return render(request, 'index.html', context)
+        return render(request, 'login.html')
 
 # login_required() decorator to ensure only those logged in can access the view.
 @login_required(login_url='/login/')
@@ -56,8 +56,8 @@ def user_logout(request):
     return redirect('/')
 
 
-class MenuPageView(TemplateView):
-    template_name = "menu.html"
+class LoginPageView(TemplateView):
+    template_name = "login.html"
 
 class AddPageView(TemplateView):
     template_name = "addStudents.html"

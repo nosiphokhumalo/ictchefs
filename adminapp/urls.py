@@ -4,7 +4,7 @@ from adminapp import views
 
 urlpatterns = [
     url(r'^$', views.HomePageView.as_view()),
-    url(r'^menu/$', login_required(login_url='/login/')(views.MenuPageView.as_view())),
+    url(r'^login-form/$', views.LoginPageView.as_view()),
     url(r'^add/$', login_required(login_url='/login/')(views.AddPageView.as_view())),
     url(r'^viewStudents/', views.viewStudent, name = 'viewStudent'),
     url(r'^viewGraduates/', views.viewGraduate, name = 'viewGraduate'),
