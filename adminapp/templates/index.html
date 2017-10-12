@@ -31,31 +31,31 @@
     		  <form  id="login-form" method="post" action="{% url 'login' %}" style="padding-left: 0.3cm;">
   {% csrf_token %}
     <div class="form-group">
-      
+
 
       	<label for="username">Username:</label>
-      
+
       	<input type="text" class="form-control" id="username" placeholder="Enter username" name="username" required autofocus="">
-     
-        
+
+
     </div>
     <div class="form-group">
       <label for="password">Password:</label>
       <input autocomplete="off" type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
-        
-     
+
+
     </div>
-    <div class="form-group">        
+    <div class="form-group">
 
         <div class="checkbox">
           <label><input type="checkbox" name="remember"> Remember me</label>
         </div>
     </div>
-          
-      
+
+
     <button id='login_button' type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
-      
-  
+
+
   </form>
     	</div>
     </div>

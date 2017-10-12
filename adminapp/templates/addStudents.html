@@ -28,9 +28,9 @@
     <ul class="nav nav-pills nav-justified">
       <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
       <li class="active"><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
-      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
-      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
-      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="/viewStudents/"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
+      <li><a href="/viewGraduates/"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
+      <li><a href="/viewDropouts/"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
       <li><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
       <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
     </ul>
@@ -73,14 +73,14 @@
 		    <br></br>
                     <button id='save_button' type="submit" class="btn btn-primary">Save</button>
                     <button id='reset_button' type="reset" class="btn btn-secondary">Clear</button>
-                    <button id='cancel_button' type="button" class="btn btn-default" >Cancel</button>
+                    <button id='cancel_button' type="button" class="btn btn-default" onclick="cancel()">Cancel</button>
                 </form>
             </div>
             <div style="margin-left: 550px; padding: 0.5cm 0cm 1cm 0cm">
                 <form id="form1" runat="server">
                     <label class="control-label" for="file">Picture:</label>
-                    <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>    
-                    <p></p>    
+                    <input  class="btn btn-default btn-file" type='file' id='file' accept="image/*"/>
+                    <p></p>
                     <img id="imagePreview" src="#" alt="your image" style="width: 75%; height: 350px" />
                 </form>
             </div>
@@ -88,6 +88,10 @@
         </div>
     </div>
     <script>
+        var cancel = function(){
+        	window.location.href = "/menu/";
+        }
+
         $(document).ready(function() {
             var date_input = $('input[name="date"]');
 
@@ -134,8 +138,9 @@
             }
         });
         $("#save_button").click(function(event) {
+        	var image;
             if (!validateForm()) {
-               
+
             } else {
                 event.preventDefault();
                 var name = $('#name').val();
@@ -143,7 +148,9 @@
                 var contact_details = $('#contact_details').val()
                 var class_no = $('#class_no').val();
                 var date = $('#date').val();
-                var image_path = $('#file').val();
+                var x = document.getElementById("file");
+				image = x.files[0];
+                var image_path = image.name;
                 var obj = {
                     "name": name,
                     "id_no": id_no,
@@ -156,14 +163,13 @@
                         "year": date
                     }]
                 }
-				var x = document.getElementById("file");
-				var image = x.files[0];
-				formData = new FormData(); 
+				formData = new FormData();
 				if (formData){
     				formData.append("image", image);
+    				console.log(image.name);
 
     				$.ajax({
-        				url : "/students/"
+        				url : "/viewStudents/",
         				type : "POST",
         				data : formData,
         				processData: false,

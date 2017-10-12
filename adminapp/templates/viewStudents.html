@@ -1,0 +1,712 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/viewStudents.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="{% static 'js/vue.js' %}"></script>
+    <script src="{% static 'ag-grid-master/dist/ag-grid.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <link rel="stylesheet" type=text/css href="{% static 'ag-grid-master/dist/styles/ag-grid.css' %}">
+    <link rel="stylesheet" type=text/css href="{% static 'ag-grid-master/dist/styles/theme-blue.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script src="{% static 'js/bootbox.min.js' %}"></script>
+
+    <style>
+        .nav-pills > li.active > a, .nav-pills > li.active > a:focus {
+            color: white;
+            background-color: #670000;
+        }
+
+        .nav-pills > li.active > a:hover {
+            background-color: #CD6155;
+            color:white;
+        }
+
+        .nav-pills > li > a, .nav-pills > li > a:focus {
+            color: #670000;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<form id="mainmenu">
+    <!--Navigation bar -->
+    <ul class="nav nav-pills nav-justified">
+      <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
+      <li><a href="/add/"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
+      <li class="active"><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
+      <li><a href="/viewGraduates/"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
+      <li><a href="/viewDropouts/"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
+      <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
+    </ul>
+
+    <!--Selected student information panel. Displays name, image, and files. Allows for delete student and upload of files/images -->
+    <div class="student" id="studentDiv">
+        <div id="info">
+            <img id="userImage" src="{% static 'placeholder-user.png' %}"></img>
+            <b><h5 id="sName"> </h5></b>
+            <button type="button" id="delete" class="btn" onclick="deleteSelected()">Delete Selected</button>
+            <h5 id="uploadImage">Upload Image: </h5>
+            <input type="file" id="myImage" size="50" class="btn btn-default btn-file" accept="image/*" onchange="loadFile()">
+            <button type="button" id="upImage" class="btn" onclick="imageUpload()">Upload Image</button>
+            <h5 id="uploadFile">Upload File: </h5>
+            <input type="file" id="myFile" size="50" class="btn btn-default btn-file" accept="application/pdf">
+            <button type="button" id="upFile" class="btn" onclick="fileUpload()">Upload File</button>
+        </div>
+        <br></br>
+        <br></br>
+        <div id="links">
+            <h5 id="linkLabel"></h5>
+            <a id="Link" target="_blank" href=""></a>
+        </div>
+
+    </div>
+
+    <div id="myGrid" style="width: 99%; height: 480px; margin-left:6px;" class="ag-blue"></div>
+
+
+</form>
+
+<script>
+    var menu = new Vue({
+        el: '#mainmenu',
+        delimiters: ['[[', ']]'],
+    });
+
+    var json_rows; // stores the json object from the database
+
+    // acquires cookie, for setting csrftoken in post request
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Check if string contains name wanted
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Defines the ag grid columns and their properties
+    var columnDefs = [
+        {headerName: 'Student_ID', field: 's_id', pinned: 'left', hide:true, suppressMenu: true, width: 90},
+        {headerName: 'Name', field: 'name', pinned: 'left', editable: true, suppressMenu: true, width: 150},
+        {headerName: 'Contact Details', field: 'contact', pinned: 'left', suppressMenu: true, editable: true, suppressFilter: true},
+        {headerName: 'ID Number', field: 'idNumber', suppressMenu: true, suppressFilter: true, editable: true, suppressSorting: true, width: 120},
+        {headerName: 'Class Number', field: 'classNumber', filterParams:{defaultOption:'equals'}, editable: true, sort: 'asc',suppressMenu: true, width: 90},
+        {headerName: 'Year', field: 'year', filterParams:{defaultOption:'equals'}, editable: true, suppressMenu: true, width: 90},
+        {headerName: 'Weekend Placement', field: 'weekend', editable: true, filterParams:{defaultOption:'contains'}, suppressMenu: true},
+        {headerName: 'Internship', field: 'internship', editable: true, suppressMenu: true},
+        {headerName: 'Current Employment', field: 'current', editable: true, suppressMenu: true},
+        {headerName: 'Employment History', field: 'history', editable: true, suppressMenu: true, width:350},
+        {headerName: 'Status', field: 'status', suppressMenu: true, editable: true, suppressFilter: true, suppressSorting: true, width: 70},
+        {headerName: 'Dropout', field: 'dropout',suppressMenu: true, filterParams:{defaultOption:'equals'}, editable: true, width: 70},
+        {headerName: 'Deceased', field: 'deceased',suppressMenu: true, filterParams:{defaultOption:'equals'}, editable: true, width: 70},
+        {headerName: 'Image Path', field: 'imagePath', hide: true},
+        {headerName: 'File Path', field: 'filePath', hide: true}
+    ];
+
+    var editCell; //for storing the most recently edited cell
+
+    // sets the ag grid options, tells the grid what it can do
+    var gridOptions = {
+        enableColResize: true,
+        debug: true,
+        animateRows: true,
+        enableServerSideSorting: true,
+        enableServerSideFilter: true,
+        rowSelection: 'single',
+        columnDefs: columnDefs,
+        rowModelType: 'infinite',
+        paginationPageSize: 100,
+        cacheOverflowSize: 2,
+        maxConcurrentDatasourceRequests: 2,
+        infiniteInitialRowCount: 1,
+        maxBlocksInCache: 2,
+        floatingFilter:true,
+        onSelectionChanged:onSelectionChanged,
+
+        // gets the row of the cell being edited
+        onCellEditingStarted: function (event) {
+            editCell = gridOptions.api.getSelectedRows();
+        },
+
+        // deals with changing of values in a cell, allows for editing the database
+        onCellValueChanged:function(event){
+            var newValue;
+            var student_id;
+            var oldValue;
+            var column;
+            // goes through the row of the edited cell to extract data for the post request
+            editCell.forEach( function(selectedRow, index) {
+                newValue = String(event.newValue).trim().replace('"',"");
+                student_id = selectedRow.s_id;
+                oldValue = String(event.oldValue).trim();
+                column = event.colDef.field;
+                // deals with changing of current employment cells
+                if(String(event.colDef.field) === "current"){
+                    if (String(selectedRow.history).length == 0){
+                        if (oldValue.toLowerCase()  === "unemployed" || oldValue.toLowerCase() === "none" || oldValue.toLowerCase() == "currently looking for work"){
+                            oldValue = "";
+                        }
+                        else{
+                            selectedRow.history = String(event.oldValue);
+                        }
+                    }
+                    else{
+                        if (oldValue.toLowerCase()  === "unemployed" || oldValue.toLowerCase() === "none"){
+                            oldValue = "";
+                        }
+                        else{
+                            selectedRow.history += ", " + String(event.oldValue);
+                        }
+                    }
+                }
+                // deals with changing of dropout cells, if dropout is set to 1 it changes status to dropout
+                if(String(event.colDef.field) === "dropout"){
+                    if (String(event.newValue).trim() === "1"){
+                        selectedRow.status = "dropout"
+                    }
+                }
+                // deals with changing of student status cells, if status is set to dropout then dropout cell is set to 1 otherwise 0
+                if(String(event.colDef.field) === "status"){
+                    if (String(event.newValue).trim().toLowerCase() === "dropout"){
+                        selectedRow.dropout = "1"
+                    }
+                    else{
+                        selectedRow.dropout = "0"
+                    }
+                }
+                gridOptions.api.refreshCells();
+            });
+            // Checks if the value in the cell is different than the previous value, if so it sends the user a notification
+            if (!(String(event.oldValue).trim() === String(event.newValue).trim())){
+                bootbox.alert(event.colDef.headerName + " has been updated from: " + event.oldValue + " to " + newValue);
+            }
+
+            var csrftoken = getCookie('csrftoken'); // gets the csrf token for the post request
+
+            // sets the header for the post request
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+
+            // sends the post request to the back-end to change the database
+            $.ajax({
+                url : window.location.href,
+                type : "POST",
+                data : {s_id:student_id,column:column,newValue:newValue,oldValue:oldValue},
+
+                 // handle successful response
+                success : function() {
+                },
+
+                 // handle unsuccessful response
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        },
+
+    };
+
+    // returns the row student id to allow for selecting rows on the grid
+    gridOptions.getRowNodeId = function(item) {
+        return item.s_id.toString();
+    }
+
+    // When the row selected changes, change the student panel to reflect the newly selected row
+    function onSelectionChanged() {
+        var elem = document.getElementById('studentDiv');
+        elem.style.visibility = 'visible';
+        var selectedRows = gridOptions.api.getSelectedRows();
+        var selectedRowsString = '';
+        var ipath1 = '';
+        var ipath2 = '';
+
+        // extracts data from selected row
+        selectedRows.forEach( function(selectedRow, index) {
+            if (index!==0) {
+                selectedRowsString += ', ';
+            }
+            selectedRowsString += selectedRow.name;
+            ipath1 += selectedRow.imagePath;
+            ipath2 += selectedRow.filePath;
+        });
+
+        document.querySelector('#sName').innerHTML = selectedRowsString; // changes the name to the name from the selected row
+        $("#myImage").replaceWith($("#myImage").val('').clone(true)); // resets the image uploader
+        $("#myFile").replaceWith($("#myFile").val('').clone(true)); // resets the file uploader
+
+        // sets the image based on the image path set in the database
+        if (ipath1 === ""){
+            ipath1 = 'placeholder-user.png';
+            var path = {% static "" %} + ipath1;
+            document.querySelector('#userImage').src = path;
+        }
+        else{
+            var path = {% static "" %} + ipath1;
+            document.querySelector('#userImage').src = path;
+        }
+
+        // sets the file link based on the file path set in the database
+        if (ipath2 === ""){
+            document.querySelector('#Link').innerHTML = "";
+            document.querySelector('#Link').href = "";
+            document.querySelector('#linkLabel').innerHTML = "";
+        }
+        else{
+            var path = {% static "" %} + ipath2;
+            document.querySelector('#Link').innerHTML = ipath2;
+            document.querySelector('#Link').href = path;
+            document.querySelector('#linkLabel').innerHTML = "Uploaded File: ";
+        }
+    }
+
+    //When an image is selected in the uploader, set the user image to the selected image
+    function loadFile() {
+        var x = document.getElementById("myImage");
+        var output = document.getElementById("userImage");
+        output.src = URL.createObjectURL(x.files[0]);
+    }
+
+    // Allows for the selected student to be deleted from the database
+    function deleteSelected(){
+        var csrftoken = getCookie('csrftoken');
+        var newValue;
+        var student_id;
+        var oldValue;
+        var column;
+        editCell = gridOptions.api.getSelectedRows();
+
+        // extracts information from the selected row
+        editCell.forEach( function(selectedRow, index) {
+            student_id = selectedRow.s_id;
+            column = "delete";
+            newValue = String(selectedRow.name).trim();
+            oldValue = "";
+        });
+
+        // Gives the user a confirmation message to check if they really want to delete the student
+        bootbox.confirm({size: "small", message:"Are you sure you want to delete " + newValue + "?",
+        callback:function(result){
+            // if the user chooses to delete the student then it removes them from the grid and the database
+            if (result==true){
+                // sets the header for the post request
+                $.ajaxSetup({
+                    beforeSend: function(xhr, settings) {
+                        if (!this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    }
+                });
+                // sends the post request to delete a student record
+                $.ajax({
+                    url : window.location.href,
+                    type : "POST",
+                    data : {s_id:student_id,column:column,newValue:newValue,oldValue:oldValue},
+
+                    // if the post request was successful the student record if removed from the ag grid
+                    success : function() {
+                        for (var i=0; i<json_rows.length; i++){
+                            if (json_rows[i].s_id == student_id){
+                                json_rows.splice(i,1);
+                                break;
+                            }
+                        }
+                        gridOptions.api.refreshInfiniteCache();
+                        var elem = document.getElementById('studentDiv');
+        				elem.style.visibility = 'hidden';
+                    },
+                    error : function(xhr,errmsg,err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            }
+        }});
+    }
+
+    // Allows the image to upload to the server and updates the database with the image path
+    function imageUpload(){
+        var csrftoken = getCookie('csrftoken'); // gets csrf token
+        var newValue;
+        var student_id;
+        var oldValue;
+        var column;
+        var x = document.getElementById("myImage");
+        formData = new FormData();
+        var image = x.files[0];
+        editCell = gridOptions.api.getSelectedRows();
+        // sets the image path for the selected row
+        editCell.forEach( function(selectedRow, index) {
+            student_id = selectedRow.s_id
+            column = "image_path"
+            newValue = x.files[0].name
+            oldValue = ""
+            selectedRow.imagePath = x.files[0].name;
+        });
+
+        gridOptions.api.refreshCells();
+        // sets the header for the post request
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        // sends the image path to the database
+        $.ajax({
+            url : window.location.href,
+            type : "POST",
+            data : {s_id:student_id,column:column,newValue:newValue,oldValue:oldValue},
+
+            success : function() {
+            },
+            error : function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
+        });
+
+        if (formData){
+            formData.append("image", image); // adds image to form data
+            // sets header for post request
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            // sends the post request with the image
+            $.ajax({
+                url : window.location.href,
+                type : "POST",
+                data : formData,
+                processData: false,
+                contentType: false,
+
+                success : function() {
+                    bootbox.alert("Image uploaded successfully.");
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+
+        }
+    }
+
+    // Allows the file to upload to the server and updates the database with the file path
+    function fileUpload(){
+        var csrftoken = getCookie('csrftoken');
+        var newValue;
+        var student_id;
+        var oldValue;
+        var column;
+        var x = document.getElementById("myFile");
+        formData = new FormData();
+        var image = x.files[0];
+        editCell = gridOptions.api.getSelectedRows();
+        // sets the file path for the selected row
+        editCell.forEach( function(selectedRow, index) {
+            student_id = selectedRow.s_id
+            column = "file_path"
+            newValue = x.files[0].name
+            oldValue = ""
+            selectedRow.filePath = x.files[0].name;
+        });
+
+        gridOptions.api.refreshCells();
+        // sets the post request header
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+        // sends the post request to set the file path in the database
+        $.ajax({
+            url : window.location.href, // the endpoint,commonly same url
+            type : "POST", // http method
+            data : {s_id:student_id,column:column,newValue:newValue,oldValue:oldValue},
+
+            success : function() {
+                // set file link
+                if (!(newValue === "")){
+                    var path = {% static "" %} + newValue;
+                    document.querySelector('#Link').innerHTML = newValue;
+                    document.querySelector('#Link').href = path;
+                    document.querySelector('#linkLabel').innerHTML = "Uploaded File: ";
+                }
+            },
+            error : function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+
+        if (formData){
+            formData.append("image", image);
+            // sets the post request header
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+            // sends the post request with the file
+            $.ajax({
+                url : window.location.href,
+                type : "POST",
+                data : formData,
+                processData: false,
+                contentType: false,
+
+                success : function() {
+                    bootbox.alert("File uploaded successfully.");
+                },
+                error : function(xhr,errmsg,err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+
+        }
+    }
+
+    // sets the row data for the infinite scroll ag grid
+    function setRowData(allOfTheData) {
+        var dataSource = {
+            rowCount: null, // behave as infinite scroll
+            getRows: function (params) {
+                console.log('asking for ' + params.startRow + ' to ' + params.endRow);
+                setTimeout(function () {
+                    // take a slice of the total rows
+                    var dataAfterSortingAndFiltering = sortAndFilter(allOfTheData, params.sortModel, params.filterModel);
+                    var rowsThisPage = dataAfterSortingAndFiltering.slice(params.startRow, params.endRow);
+                    // if on or after the last page, work out the last row.
+                    var lastRow = -1;
+                    if (dataAfterSortingAndFiltering.length <= params.endRow) {
+                        lastRow = dataAfterSortingAndFiltering.length;
+                    }
+                    // call the success callback
+                    params.successCallback(rowsThisPage, lastRow);
+                }, 50);
+            }
+        };
+
+        gridOptions.api.setDatasource(dataSource);
+    }
+
+    // performs sort an filters on ag grid
+    function sortAndFilter(allOfTheData, sortModel, filterModel) {
+        return sortData(sortModel, filterData(filterModel, allOfTheData))
+    }
+
+    // sorts columns according to ascending or descending
+    function sortData(sortModel, data) {
+        var sortPresent = sortModel && sortModel.length > 0;
+        if (!sortPresent) {
+            return data;
+        }
+        // do an in memory sort of the data, across all the fields
+        var resultOfSort = data.slice();
+        resultOfSort.sort(function(a,b) {
+            for (var k = 0; k<sortModel.length; k++) {
+                var sortColModel = sortModel[k];
+                var valueA = a[sortColModel.colId];
+                var valueB = b[sortColModel.colId];
+                // this filter didn't find a difference, move onto the next one
+                var temp1 = parseInt(valueA)
+                var temp2 = parseInt(valueB)
+                if (isNaN(temp1) == false && isNaN(temp2) == false){
+                    valueA = temp1;
+                    valueB = temp2;
+                }
+                else{
+                    try{
+                    valueA = valueA.toUpperCase()
+                    valueB = valueB.toUpperCase()
+                    }
+                    catch(err){
+
+                    }
+                }
+
+                if (valueA==valueB) {
+                    continue;
+                }
+                var sortDirection = sortColModel.sort === 'asc' ? 1 : -1;
+                if (valueA > valueB) {
+                    return sortDirection;
+                } else {
+                    return sortDirection * -1;
+                }
+            }
+            // no filters found a difference
+            return 0;
+        });
+        return resultOfSort;
+    }
+
+    // filters columns according to the string entered into the filter edit box
+    function filterData(filterModel, data) {
+        var filterPresent = filterModel && Object.keys(filterModel).length > 0;
+        if (!filterPresent) {
+            return data;
+        }
+
+        var resultOfFilter = [];
+        for (var i = 0; i<data.length; i++) {
+            var item = data[i];
+            // filters name column
+            if (filterModel.name) {
+                var name = item.name;
+                name = name.toUpperCase();
+                var selectedName = filterModel.name.filter;
+                selectedName = selectedName.toUpperCase();
+                if (filterModel.name.type == 'contains') {
+                    if (!name.includes(selectedName)) {
+                        continue;
+                    }
+                }
+                else if (filterModel.name.type == 'equals') {
+                    if (name != selectedName) {
+                        continue;
+                    }
+                }
+            }
+            // filters weekend placement column
+            if (filterModel.weekend) {
+                var weekend = item.weekend;
+                var selected = filterModel.weekend.filter;
+                try{
+                    weekend = String(weekend).toUpperCase();
+                    selected = selected.toUpperCase();
+                }
+                catch(err){
+                }
+                if (filterModel.weekend.type == 'contains') {
+                    if (!weekend.includes(selected)) {
+                        continue;
+                    }
+                }
+            }
+            // filters internship column
+            if (filterModel.internship) {
+                var internship = item.internship;
+                internship = internship.toUpperCase();
+                var selected = filterModel.internship.filter;
+                selected = selected.toUpperCase();
+                if (filterModel.internship.type == 'contains') {
+                    if (!internship.includes(selected)) {
+                        continue;
+                    }
+                }
+            }
+            // filters current employment column
+            if (filterModel.current) {
+                var current = item.current;
+                current = current.toUpperCase();
+                var selected = filterModel.current.filter;
+                selected = selected.toUpperCase();
+                if (filterModel.current.type == 'contains') {
+                    if (!current.includes(selected)) {
+                        continue;
+                    }
+                }
+            }
+            // filters employment history column
+            if (filterModel.history) {
+                var history = item.history;
+                history = String(history).toUpperCase();
+                var selected = filterModel.history.filter;
+                selected = selected.toUpperCase();
+                if (filterModel.history.type == 'contains') {
+                    if (!history.includes(selected)) {
+                        continue;
+                    }
+                }
+            }
+            // filters year column
+            if (filterModel.year) {
+                var year = item.year.toString();
+                var selectedYear = filterModel.year.filter;
+                if (filterModel.year.type == 'equals'){
+                    if (year != selectedYear){
+                        continue;
+                    }
+                }
+            }
+            // filters dropout column
+            if (filterModel.dropout) {
+                var dropout = item.dropout.toString();
+                var selected = filterModel.dropout.filter;
+                if (filterModel.dropout.type == 'equals'){
+                    if (dropout != selected){
+                        continue;
+                    }
+                }
+            }
+            // filters deceased column
+            if (filterModel.deceased) {
+                var deceased = item.deceased.toString();
+                var selected = filterModel.deceased.filter;
+                if (filterModel.deceased.type == 'equals'){
+                    if (deceased != selected){
+                        continue;
+                    }
+                }
+            }
+            // filters class number column
+            if (filterModel.classNumber) {
+                var classNo = item.classNumber.toString();
+                var selectedClass = filterModel.classNumber.filter;
+                if (filterModel.classNumber.type == 'equals'){
+                    if (classNo != selectedClass){
+                        continue;
+                    }
+                }
+            }
+
+            resultOfFilter.push(item);
+        }
+
+        return resultOfFilter;
+    }
+
+    // initialises the grid and sets the data into the columns
+    document.addEventListener('DOMContentLoaded', function() {
+        var gridDiv = document.querySelector('#myGrid');
+        new agGrid.Grid(gridDiv, gridOptions);
+        {% autoescape off %}
+            var rows = '[{{sInfo}}]'; // gets the information from the database
+        {% endautoescape %}
+
+        json_rows = JSON.parse(rows);
+        setRowData(json_rows); // sets the row data in the grid
+
+
+    });
+
+
+</script>
+
+</html>

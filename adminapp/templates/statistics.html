@@ -22,7 +22,7 @@
         function calc(){
         	var employed = {{ employed }};
 	    	var all_students = {{ all_students }};
-			var percentage = parseFloat(employed) / parseFloat(all_students) * 100;    
+			var percentage = parseFloat(employed) / parseFloat(all_students) * 100;
 			document.getElementById("myPercentage").innerHTML = percentage;
     	}
 	</script>
@@ -106,7 +106,7 @@
     </script>
     <script>
     	function Scrolldown() {
-     		window.scroll(0,300); 
+     		window.scroll(0,300);
 		}
 
 		window.onload = Scrolldown;
@@ -118,9 +118,9 @@
     <ul class="nav nav-pills nav-justified">
       <li><a href="/menu/"><i class="fa fa-home" aria-hidden="true"></i><br>Home</a></li>
       <li><a href="/add/"><i class="fa fa-user-plus" aria-hidden="true"></i><br>Add Student</a></li>
-      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
-      <li><a href="#"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
-      <li><a href="#"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
+      <li><a href="/viewStudents/"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Students</a></li>
+      <li><a href="/viewGraduates/"><i class="fa fa-graduation-cap" aria-hidden="true"></i><br>View Graduates</a></li>
+      <li><a href="/viewDropouts/"><i class="fa fa-list-ul" aria-hidden="true"></i><br>View Dropouts</a></li>
       <li class="active"><a href="/statistics"><i class="fa fa-bar-chart" aria-hidden="true"></i><br>View Statistics</a></li>
       <li><a href="/logout/"><i class="fa fa-sign-out" aria-hidden="true"></i><br>Logout</a></li>
     </ul>
