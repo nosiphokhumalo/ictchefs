@@ -9,8 +9,30 @@ This is a web-based data management system created for out honours project. The 
 
 This is the code for the web-based data management tool. Code to the mobile application can be found at https://github.com/sewagodimo/ChefSchoolAndroidApp.
 
-## Features
+
+# CONTRIBUTIONS
+
+## AmyLBrodie:
+
+1. Front-end for adding a student to the database
+2. Front-end and back-end to view current students, graduates and dropouts
+
+
+## Nosipho Khumalo:
+
+1. Back-end for adding a student to the database
+2. Front-end and back-end to view statistics
+
+
+# FEATURES
  1. Store student information
  2. View overall statistics
  3. Filter statistics by year(s) of admission or class number(s)
- 4. 
+ 4. View all student information
+ 5. View/edit/delete a specific student's information
+ 6. Sort, filter and search student information
+
+# DEPENDENCIES
+
+Python 3.5.2
+Django 1.8
