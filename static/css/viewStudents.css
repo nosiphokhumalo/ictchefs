@@ -1,0 +1,136 @@
+html{
+    min-width:100%;
+    min-height: 100%;
+}
+
+.menu{
+    border-radius:2px;
+    width:100%;
+    position:relative;
+    margin-top: -25px;
+    text-align: center;
+
+}
+
+.menu table{
+    width:100%;
+}
+
+.menu h4{
+    color:#283747;
+    display:inline-block;
+    position: relative;
+    top: 10px;
+}
+
+.menu a{
+    background:#566573 center center no-repeat;
+    position: absolute;
+    top:20px;
+    left: 5px;
+    width:35px;
+    height:35px;
+    display:inline-block;
+    text-decoration:none !important;
+    margin-right:5px;
+    border-radius:2px;
+    cursor:pointer;
+
+}
+
+.menu a.home-icon{
+    background-image:url("home.png");
+    background-size:40px 30px;
+}
+
+.student{
+    text-align: center;
+    visibility:hidden;
+    width: 100%;
+    margin-top: 5px;
+}
+
+
+#sName{
+    display:inline-block;
+    float:left;
+    font-weight: bold;
+    padding-left:20px;
+    padding-right:30px;
+    padding-top: 5px;
+}
+
+#userImage {
+    display:inline-block;
+    min-width: 5%;
+    max-width: 5%;
+    text-align: center;
+    float:left;
+    margin-left:5px;
+    margin-bottom:2px;
+}
+
+#myFile{
+    display:inline-block;
+    max-width:17%;
+    float:left;
+    margin-top: 5px;
+}
+
+#myImage{
+    display:inline-block;
+    max-width:17%;
+    float:left;
+    margin-top: 5px;
+}
+
+#uploadImage{
+    display:inline-block;
+    float:left;
+    padding-top: 5px;
+}
+
+#upImage{
+    display:inline-block;
+    float:left;
+    margin-top: 5px;
+}
+
+#upFile{
+    display:inline-block;
+    float:left;
+    margin-top: 5px;
+}
+
+#uploadFile{
+    display:inline-block;
+    margin-left:30px;
+    float:left;
+    padding-top: 5px;
+}
+
+#delete{
+    display:inline-block;
+    margin-right:30px;
+    float:left;
+    margin-top: 5px;
+}
+
+#Link{
+    display:inline;
+}
+
+#linkLabel{
+    display:inline;
+}
+
+#links{
+    text-align:center;
+    margin-top:-20px;
+    margin-bottom:5px
+}
+
+
+#myGrid{
+    float:left;
+}
