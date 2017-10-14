@@ -47,6 +47,7 @@
   {% endfor %}
 {% endif %}
         <div class="alert alert-success" id="success-alert" style="display:none"> Student saved successfully!</div>
+        <div class="alert alert-success" id="duplicate-alert" style="display:none"> Student is already in the database</div>
         <div id="body_container" style="overflow: hidden; ">
             <div id="form_container" style=" float: left;">
                 <form id='myForm' style='width:450px; padding: 0.5cm 0cm 0cm 0.5cm'>
@@ -150,9 +151,15 @@
                 var contact_details = $('#contact_details').val()
                 var class_no = $('#class_no').val();
                 var date = $('#date').val();
+                var image_path = "";
                 var x = document.getElementById("file");
-				image = x.files[0];
-                var image_path = image.name;
+                console.log(x.files.length)
+                if (x.files.length != 0){
+                  image = x.files[0];
+                  image_path = image.name;
+                }
+
+
                 var obj = {
                     "name": name,
                     "id_no": id_no,
@@ -165,26 +172,28 @@
                         "year": date
                     }]
                 }
-				formData = new FormData();
-				if (formData){
-    				formData.append("image", image);
-    				console.log(image.name);
+				        if (x.files.length != 0){
+                  formData = new FormData();
+          				if (formData){
+              				formData.append("image", image);
 
-    				$.ajax({
-        				url : "/viewStudents/",
-        				type : "POST",
-        				data : formData,
-        				processData: false,
-        				contentType: false,
+              				$.ajax({
+                  				url : "/viewStudents/",
+                  				type : "POST",
+                  				data : formData,
+                  				processData: false,
+                  				contentType: false,
 
-        				success : function() {
-        				},
-        				error : function(xhr,errmsg,err) {
-            				console.log(xhr.status + ": " + xhr.responseText);
-        				}
-    				});
+                  				success : function() {
+                  				},
+                  				error : function(xhr,errmsg,err) {
+                      				console.log(xhr.status + ": " + xhr.responseText);
+                  				}
+              				});
 
-				}
+          				}
+                }
+
                 $.ajax({
                     type: "POST",
                     url: "/students/",
@@ -194,18 +203,26 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    success: function() {
+                    success: function(data, textStatus, XmlHttpRequest) {
                         document.getElementById("myForm").reset();
                         document.getElementById("form1").reset();
                         document.getElementById("imagePreview").src = "#";
-                        $("#success-alert").show();
-                        setTimeout(function() {
-                            $("#success-alert").hide();
-                        }, 5000);
+                        console.log(XmlHttpRequest.status);
+                        if(XmlHttpRequest.status === 201){
+                          $("#success-alert").show();
+                          setTimeout(function() {
+                              $("#success-alert").hide();
+                          }, 5000);
+                        } else if (XmlHttpRequest.status === 202){
+                          $("#duplicate-alert").show();
+                          setTimeout(function() {
+                              $("#duplicate-alert").hide();
+                          }, 5000);
+                        }
                     },
                     error : function(xhr,errmsg,err) {
-            				console.log(xhr.status + ": " + xhr.responseText);
-        			}
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
                 });
             }
         });

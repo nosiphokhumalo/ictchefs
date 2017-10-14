@@ -122,14 +122,14 @@ class StudentList(APIView):
         sid_no = request.data['id_no']
         try:
             obj = Student.objects.get(name=sname, id_no=sid_no)
-            messages.add_message(request._request, messages.INFO, "Student is already in database")
         except Student.DoesNotExist:
             serializer = StudentSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return HttpResponse('An error occured')
+        # Student is in the database
+        return Response({'message': 'Student is in database'}, status=status.HTTP_202_ACCEPTED)
 
 # Deals with incoming post requests
 def postRequestMethod(request):
