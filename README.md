@@ -39,10 +39,10 @@ Django 1.8
 
 # SCREENSHOTS
 
-![alt text](https://raw.githubusercontent.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/menu.png "Home Page")
+![alt text](https://github.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/menu.png "Home Page")
 
-![alt text](https://raw.githubusercontent.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/add.png "Add New Student Page")
+![alt text](https://github.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/add.png "Add New Student Page")
 
-![alt text](https://raw.githubusercontent.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/view.png "View Students Page")
+![alt text](https://github.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/view.png "View Students Page")
 
-![alt text](https://raw.githubusercontent.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/statistics.png "View Statistics Page")
+![alt text](https://github.com/nosiphokhumalo/honours-project-chefreg/tree/master/static/img/statistics.png "View Statistics Page")
