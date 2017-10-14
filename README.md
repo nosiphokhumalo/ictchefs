@@ -39,10 +39,14 @@ Django 1.8
 
 # SCREENSHOTS
 
+### Home Page
 ![](static/img/menu.png "Home Page")
 
-![](static/img/add.png "Add New Student Page")
+### Add New Student
+![](static/img/add.png "Add New Student")
 
-![](static/img/view.png "View Students Page")
+### View Students
+![](static/img/view.png "View Students")
 
-![](static/img/statistics.png "View Statistics Page")
+### View Statistics
+![](static/img/statistics.png "View Statistics")
