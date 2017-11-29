@@ -13,6 +13,7 @@ from django.http import Http404
 from django.contrib import messages
 
 from adminapp.serializers import StudentSerializer
+from adminapp.serializer1 import AppSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -425,3 +426,327 @@ def viewDropout(request):
 	rows = getStudents(students)
 
 	return render(request, "viewDropouts.html", {'sInfo':rows})
+
+class StudentManager(APIView):
+
+    """
+
+    Retrieve, update or delete a student instance.
+
+    """
+
+
+
+    def get_object(self, pk):
+
+        try:
+
+            return Student.objects.get(pk=pk)
+
+        except Student.DoesNotExist:
+
+            raise Http404
+
+    def get_pk_from_name(self,student_name, student_password):
+
+        try:
+
+            return Student.objects.get(name=student_name,password=student_password)
+
+        except Student.DoesNotExist:
+
+            print("FAM")
+
+            return Response("what are you save")
+
+    def is_student_new(self,student_name):
+
+        num_results = Student.objects.filter(name = student_name).count()
+
+        if(num_results==0):
+
+            return True #the student is new
+
+        else:
+
+            return False #the student exits
+
+
+
+    def get(self, request, format=None):
+
+        print(request.data)
+
+        name= request.data.get('name')
+
+        password=request.data.get('password')
+
+        student = self.get_pk_from_name(name,password)
+
+        serial = AppSerializer(student)
+
+        return Response(serial.data)
+
+    def createuser(self,name,password,request):
+
+        student = Student.objects.create()
+
+        student.name=name
+
+        student.password=password
+
+        student.address='South Africa, Western Cape, Cape Town, Khayelisha'
+
+        student.save()
+
+        student.activated=1
+
+        student.id_no=""
+
+        student.deceased=0
+
+        student.save()
+
+        #add the student's profile
+
+        print(' contact details')
+
+        student=ContactDetails(student=self.get_pk_from_name(name,password),contact=request.data.get('contact'))
+
+        student.save()
+
+        student = EmploymentHistory(student=self.get_pk_from_name(name,password),employment="")
+
+        student.save()
+
+        student= StudentInfo(student=self.get_pk_from_name(name,password),grad_or_student='student',year=2017,class_no=0)
+
+        student.save()
+
+        student = WeekendPlacement(student=self.get_pk_from_name(name,password),placement="")
+
+        student.save()
+
+        student = EmploymentInfo(student=self.get_pk_from_name(name,password),current_employment="",internship="")
+
+        student.save()
+
+
+
+        return 'Created a new user'
+
+
+
+
+
+    def post(self, request,format=None):
+
+        print(request.data)
+
+        if(request.data.get('title')=='register'):
+
+            #check if the student is in the db
+
+            name= request.data.get('name')
+
+            password=request.data.get('password')
+
+            if(self.is_student_new(name)):
+
+                self.createuser(name,password,request)
+
+                return Response('Created a new user')
+
+            else:
+
+                print("student is already in the db") #update their concat details and password, then set them to active
+
+                student=Student.objects.get(name=name)
+
+                if(student.activated==0 ):
+
+                    student.activated=1
+
+                    student.save()
+
+                    student.password=password
+
+                    student.save()
+
+                    return Response('activated your account')
+
+                else:
+
+                    return Response('This account already activated')
+
+                #check if their account is active
+
+            return Response("Could not do anything with the user")
+
+        elif request.data.get('title'=='forgot password'):
+
+            print('forgot password')
+
+            try:
+
+                name = request.data.get('name')
+
+                student = Student.objects.get(name = name)
+
+                contact= request.data.get('contact')
+
+                password= student.password
+
+                print(password)
+
+                student = ContactDetails.objects.filter(student=self.get_pk_from_name(name,password))
+
+                for c in student:
+
+                    if (c==contact):
+
+                        return Response('Success _'+password+'_')
+
+                return Response('Unknown User ')
+
+            except:
+
+                return Response('[Student not found]')
+
+        #we are not creating a new user
+
+        name=request.data.get('name') #username and password are now passed as parameters
+
+        password=request.data.get('image') #I like to hide the password
+
+
+
+        student=Student.objects.get(name=name,password=password) #get all the info about the student
+
+
+
+        #serializer = StudentSerializer(student,data=request.data) #when students edit their data
+
+        #crashes
+
+        if request.data.get('title')=='edit profile':
+
+            print("edit")
+
+            name = request.data.get('new_name')
+
+            contact= request.data.get('contact')
+
+            other_contact=request.data.get('other_contact')
+
+            id_no = request.data.get('id_no')
+
+            classno=request.data.get('class')
+
+            student.name=name
+
+            student.id_no= id_no
+
+            student.save()
+
+            student = ContactDetails.objects.filter(student=self.get_pk_from_name(name,password))
+
+            for c in student:
+
+                 c.delete();
+
+            student=ContactDetails(student=self.get_pk_from_name(name,password),contact=contact)
+
+            student.save()
+
+            student=ContactDetails(student=self.get_pk_from_name(name,password),contact=other_contact)
+
+            student.save()
+
+            student = StudentInfo.objects.get(student=self.get_pk_from_name(name,password))
+
+            student.class_no= int(classno)
+
+            student.save()
+
+            return Response("Edited successfully")
+
+
+
+        elif request.data.get('title')=='update address':
+
+            student=Student.objects.get(name=name,password=password)
+
+            address= request.data.get('address')
+
+            student.address=address
+
+            student.save()
+
+            print(request.data.get('address'))
+
+            return Response("Edited the address")
+
+
+
+        elif request.data.get('title')=='new job':
+
+            new_job = request.data.get('new job')
+
+            print('new job')
+
+            try:
+
+                student=EmploymentInfo.objects.get(student=self.get_pk_from_name(name,password)) #convert student to list of all employment info
+
+                student.current_employment= new_job
+
+                student.save()
+
+                student= EmploymentHistory(student=self.get_pk_from_name(name,password), employment=new_job)
+
+                student.save()
+
+            except:
+
+                s = self.get_pk_from_name(name,password)
+
+                return Response(" Could not find employent history")
+
+            return Response("You got a new job")
+
+        elif request.data.get('title')=='lost job':
+
+            print('lost job')
+
+            student=EmploymentInfo.objects.get(student=self.get_pk_from_name(name,password)) #convert student to list of all employment info
+
+            student.current_employment = "" #add it as a new employment
+
+            student.save()
+
+            return Response('You have lost your job')
+
+        elif request.data.get('title')=='log in':
+
+            print('logging in -----------------------------------------------------')
+
+            print(request.data)
+
+            serial = AppSerializer(student)
+
+            return Response(serial.data)
+
+        print('UNKNOWN REQUEST :'+request.data.get('title'))
+
+        return Response('UNKNOWN REQUEST :' +request.data.get('title'))
+
+
+
+    def delete(self, request, pk, format=None):
+
+        student = self.get_object(pk)
+
+        student.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

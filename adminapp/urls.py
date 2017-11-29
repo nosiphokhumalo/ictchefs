@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^filter/', views.filter, name='filter'),
     url(r'^login/', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
+    url(r'^passfhjbfhj4893y54/ICTchefmanage/d309ff35fa8a4213de44d771e5cc341dictchefs2017/$', views.StudentManager.as_view(), name='students'),
 
 ]
