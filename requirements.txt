@@ -33,7 +33,6 @@ pycodestyle==2.3.1
 pycrypto==2.6.1
 pycups==1.9.73
 pyflakes==1.6.0
-pygobject==3.24.1
 PyJWT==1.4.2
 python-apt==1.4.0b3
 python-debian==0.1.30
