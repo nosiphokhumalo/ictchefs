@@ -27,15 +27,15 @@ This is a web-based data management system created for [Infinity Culinary Traini
 - Django 1.11.7
 
 ## Running the project
-1. Clone this repo
-2. Ensure that Django is installed
-3. Navigate into the root directory of the project
-4. Install the required libraries
+- Ensure that Django is installed
+- Clone this repository
+  - ```git clone https://github.com/nosiphokhumalo/ictchefs.git && cd ictchefs```
+- Install the required libraries
   - ```pip3 install -r requirements.txt```
-5. Make the necessary migrations
+- Make the necessary migrations
   - ```python3 manage.py makemigrations```
   - ```python3 manage.py migrate```
-6. Run the project
+- Run the project
   - ```python3 manage.py runserver```
 
 ## Deploying on Heroku
@@ -49,8 +49,8 @@ This is a web-based data management system created for [Infinity Culinary Traini
   - ```heroku login```
 - Inside the project root, create a Heroku app:
   - ```heroku create```
-- Add a PostgreSQL database to your app:
-  - ```heroku addons:create heroku-postgresql:hobby-dev```
+- Add a MySQL database to your app:
+  - ```heroku addons:create cleardb:ignite```
 - Push to deploy:
   - ```git push heroku master```
 - Migrate the database:
