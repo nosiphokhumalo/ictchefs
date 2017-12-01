@@ -44,17 +44,6 @@ SecretStorage==2.3.1
 simplejson==3.11.1
 six==1.10.0
 systemd-python==234
-unity-scope-chromiumbookmarks==0.1
-unity-scope-colourlovers==0.1
-unity-scope-devhelp==0.1
-unity-scope-firefoxbookmarks==0.1
-unity-scope-manpages==0.1
-unity-scope-openclipart==0.1
-unity-scope-texdoc==0.1
-unity-scope-tomboy==0.1
-unity-scope-virtualbox==0.1
-unity-scope-yelp==0.1
-unity-scope-zotero==0.1
 urllib3==1.22
 usb-creator==0.3.3
 virtualenv==15.1.0
