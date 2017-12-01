@@ -25,7 +25,7 @@ SECRET_KEY = 'hz&12z1c9q@s(za7mh3)1j=yt$11+g87*k-abzhbr%k609fo*s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ict-chefs.herokuapp.com']
 
 
 # Application definition
