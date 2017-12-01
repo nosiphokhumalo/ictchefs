@@ -14,7 +14,6 @@ httplib2==0.9.2
 idna==2.6
 keyring==10.4.0
 keyrings.alt==2.2
-language-selector==0.1
 launchpadlib==1.10.5
 lazr.restfulclient==0.13.5
 lazr.uri==1.0.3
