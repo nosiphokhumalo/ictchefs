@@ -1,0 +1,11 @@
+.panel {
+	max-width: 430px;
+    margin: 0 auto 20px;
+    padding: 20px 20px 20px 20px;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background-color: #CD6155   !important;
+    border-color: #CD6155 !important;
+}

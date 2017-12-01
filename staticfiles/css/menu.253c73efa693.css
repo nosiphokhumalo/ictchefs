@@ -1,0 +1,13 @@
+.dummy {
+    margin-top: 100%;
+}
+
+.thumbnail {
+    position: absolute;
+    top: 15px;
+    bottom: 10;
+    left: 15px;
+    right:0;
+    text-align:center;
+    padding-top:calc(50% - 70px);
+}
