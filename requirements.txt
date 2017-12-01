@@ -44,7 +44,6 @@ SecretStorage==2.3.1
 simplejson==3.11.1
 six==1.10.0
 systemd-python==234
-unity-scope-calculator==0.1
 unity-scope-chromiumbookmarks==0.1
 unity-scope-colourlovers==0.1
 unity-scope-devhelp==0.1
