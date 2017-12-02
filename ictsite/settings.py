@@ -78,14 +78,6 @@ WSGI_APPLICATION = 'ictsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ict_studentdb',
-        'USER': 'root',
-        'PASSWORD': 'r00t',
-    }
-}
 
 # Register database schemes in URLs.
 urllib.parse.uses_netloc.append('mysql')
