@@ -45,7 +45,6 @@ requests==2.18.4
 SecretStorage==2.3.1
 simplejson==3.11.1
 six==1.10.0
-system-service==0.3
 systemd-python==234
 ubuntu-drivers-common==0.0.0
 ufw==0.35
