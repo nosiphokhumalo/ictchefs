@@ -24,7 +24,6 @@ This is a web-based data management system created for [Infinity Culinary Traini
 ## Requirements
 
 - Python 3.6.3
-- Django 1.11.7
 
 ## Running the project
 - Ensure that Django is installed
