@@ -87,7 +87,7 @@ DATABASES = {
     }
 }
 
-DATABASE_URL = 'mysql://b8b69eff9f2f94:1c84ebbc@us-cdbr-iron-east-05.cleardb.net/heroku_684b3db5f061752'
+#DATABASE_URL = 'mysql://b8b69eff9f2f94:1c84ebbc@us-cdbr-iron-east-05.cleardb.net/heroku_684b3db5f061752'
 # Register database schemes in URLs.
 urllib.parse.uses_netloc.append('mysql')
 
