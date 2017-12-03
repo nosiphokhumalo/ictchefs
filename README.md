@@ -50,7 +50,7 @@ This is a web-based data management system created for [Infinity Culinary Traini
 - Inside the project root, create a Heroku app:
   - ```heroku create test-ictchefs``` or ```heroku create``` if you want Heroku to pick a name for you
 - Add a MySQL database to your app:
-  - ```heroku addons:create cleardb:punch```
+  - ```heroku addons:create cleardb:ignite```
 - Push to deploy:
   - ```git push heroku master```
 - Migrate the database:
