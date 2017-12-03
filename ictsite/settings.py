@@ -84,6 +84,7 @@ DATABASES = {
         'NAME': 'ict_studentdb',
         'USER': 'root',
         'PASSWORD': 'r00t',
+        'HOST': 'localhost',
     }
 }
 
